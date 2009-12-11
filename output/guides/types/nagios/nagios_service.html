@@ -1,0 +1,348 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="../../../files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../../files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="../../../files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="../../../files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="../../../files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="../../../index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="../../../index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="../../../introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="../../../installation.html">Installing Puppet</a></dd>
+              <dd><a href="../../../language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="../../../types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="../../../types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <h1 id='nagios_service'>nagios_service</h1>
+
+<p>The Nagios type service.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="../../../images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+<li><a href="#background">Background</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#platforms">Platforms</a></li>
+<li><a href="#version_compatibility">Version Compatibility</a></li>
+<li>
+<a href="#parameters">Parameters</a><ul style="list-style: none;">
+<li><a href="#id608"><code>_naginator_name</code></a></li>
+<li><a href="#id609"><code>action_url</code></a></li>
+<li><a href="#id610"><code>active_checks_enabled</code></a></li>
+<li><a href="#id611"><code>check_command</code></a></li>
+<li><a href="#id612"><code>check_freshness</code></a></li>
+<li><a href="#id613"><code>check_interval</code></a></li>
+<li><a href="#id614"><code>check_period</code></a></li>
+<li><a href="#id615"><code>contact_groups</code></a></li>
+<li><a href="#id616"><code>contacts</code></a></li>
+<li><a href="#id617"><code>display_name</code></a></li>
+<li><a href="#id618"><code>ensure</code></a></li>
+<li><a href="#id619"><code>event_handler</code></a></li>
+<li><a href="#id620"><code>event_handler_enabled</code></a></li>
+<li><a href="#id621"><code>failure_prediction_enabled</code></a></li>
+<li><a href="#id622"><code>first_notification_delay</code></a></li>
+<li><a href="#id623"><code>flap_detection_enabled</code></a></li>
+<li><a href="#id624"><code>flap_detection_options</code></a></li>
+<li><a href="#id625"><code>freshness_threshold</code></a></li>
+<li><a href="#id626"><code>high_flap_threshold</code></a></li>
+<li><a href="#id627"><code>host_name</code></a></li>
+<li><a href="#id628"><code>hostgroup_name</code></a></li>
+<li><a href="#id629"><code>icon_image</code></a></li>
+<li><a href="#id630"><code>icon_image_alt</code></a></li>
+<li><a href="#id631"><code>initial_state</code></a></li>
+<li><a href="#id632"><code>is_volatile</code></a></li>
+<li><a href="#id633"><code>low_flap_threshold</code></a></li>
+<li><a href="#id634"><code>max_check_attempts</code></a></li>
+<li><a href="#id635"><code>normal_check_interval</code></a></li>
+<li><a href="#id636"><code>notes</code></a></li>
+<li><a href="#id637"><code>notes_url</code></a></li>
+<li><a href="#id638"><code>notification_interval</code></a></li>
+<li><a href="#id639"><code>notification_options</code></a></li>
+<li><a href="#id640"><code>notification_period</code></a></li>
+<li><a href="#id641"><code>notifications_enabled</code></a></li>
+<li><a href="#id642"><code>obsess_over_service</code></a></li>
+<li><a href="#id643"><code>parallelize_check</code></a></li>
+<li><a href="#id644"><code>passive_checks_enabled</code></a></li>
+<li><a href="#id645"><code>process_perf_data</code></a></li>
+<li><a href="#id646"><code>provider</code></a></li>
+<li><a href="#id647"><code>register</code></a></li>
+<li><a href="#id648"><code>retain_nonstatus_information</code></a></li>
+<li><a href="#id649"><code>retain_status_information</code></a></li>
+<li><a href="#id650"><code>retry_check_interval</code></a></li>
+<li><a href="#id651"><code>retry_interval</code></a></li>
+<li><a href="#id652"><code>service_description</code></a></li>
+<li><a href="#id653"><code>servicegroups</code></a></li>
+<li><a href="#id654"><code>stalking_options</code></a></li>
+<li><a href="#id655"><code>target</code></a></li>
+<li><a href="#id656"><code>use</code></a></li>
+</ul>
+</li></ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <h2 id='background'>Background</h2>
+
+<p>This resource type is autogenerated using the model developed in <a href='http://projects.reductivelabs.com/projects/naginator'>Naginator</a>, and all of the Nagios types are generated using the same code and the same library.</p>
+
+<p>This type generates Nagios configuration statements in Nagios-parseable configuration files. By default, the statements will be added to <code>/etc/nagios/&lt;type&gt;.cfg</code>, but you can send them to a different file by setting their <code>target</code> attribute.</p>
+<div class='warning'><p>You can purge Nagios resources using the <code>resources</code> type, but <em>only</em> in the default file locations. This is an architectural limitation.</p></div>
+<h2 id='requirements'>Requirements</h2>
+
+<p>No additional requirmements.</p>
+
+<h2 id='platforms'>Platforms</h2>
+
+<p>All platforms.</p>
+
+<h2 id='version_compatibility'>Version Compatibility</h2>
+<div class='warning'><p>This section has not been completed.</p></div>
+<h2 id='parameters'>Parameters</h2>
+
+<h3 id='id657'><code>_naginator_name</code></h3>
+
+<p>The name parameter for Nagios type service</p>
+<div class='info'><p>This is the <code>namevar</code> for this resource type.</p></div>
+<h3 id='id658'><code>action_url</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id659'><code>active_checks_enabled</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id660'><code>check_command</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id661'><code>check_freshness</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id662'><code>check_interval</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id663'><code>check_period</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id664'><code>contact_groups</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id665'><code>contacts</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id666'><code>display_name</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id667'><code>ensure</code></h3>
+
+<p>The basic property that the resource should be in. Valid values are <code>present</code>, <code>absent</code>.</p>
+
+<h3 id='id668'><code>event_handler</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id669'><code>event_handler_enabled</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id670'><code>failure_prediction_enabled</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id671'><code>first_notification_delay</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id672'><code>flap_detection_enabled</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id673'><code>flap_detection_options</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id674'><code>freshness_threshold</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id675'><code>high_flap_threshold</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id676'><code>host_name</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id677'><code>hostgroup_name</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id678'><code>icon_image</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id679'><code>icon_image_alt</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id680'><code>initial_state</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id681'><code>is_volatile</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id682'><code>low_flap_threshold</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id683'><code>max_check_attempts</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id684'><code>normal_check_interval</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id685'><code>notes</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id686'><code>notes_url</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id687'><code>notification_interval</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id688'><code>notification_options</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id689'><code>notification_period</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id690'><code>notifications_enabled</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id691'><code>obsess_over_service</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id692'><code>parallelize_check</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id693'><code>passive_checks_enabled</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id694'><code>process_perf_data</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id695'><code>provider</code></h3>
+
+<p>The specific backend for provider to use. You will seldom need to specify this &#8211; Puppet will usually discover the appropriate provider for your platform. Available providers are:</p>
+
+<ul>
+<li><strong>naginator</strong>:</li>
+</ul>
+
+<h3 id='id696'><code>register</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id697'><code>retain_nonstatus_information</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id698'><code>retain_status_information</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id699'><code>retry_check_interval</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id700'><code>retry_interval</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id701'><code>service_description</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id702'><code>servicegroups</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id703'><code>stalking_options</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+
+<h3 id='id704'><code>target</code></h3>
+
+<p>target</p>
+
+<h3 id='id705'><code>use</code></h3>
+
+<p>Nagios configuration file parameter.</p>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

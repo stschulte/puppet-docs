@@ -1,0 +1,153 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="../../files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="../../files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="../../files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="../../index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="../../index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="../../introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="../../installation.html">Installing Puppet</a></dd>
+              <dd><a href="../../language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="../../types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="../../types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <h1 id='mcx'>mcx</h1>
+
+<p>MCX object management using DirectoryService on OS X.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="../../images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+<li><a href="#background">Background</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#platforms">Platforms</a></li>
+<li><a href="#version_compatibility">Version Compatibility</a></li>
+<li><a href="#examples">Examples</a></li>
+<li>
+<a href="#parameters">Parameters</a><ul style="list-style: none;">
+<li><a href="#id266"><code>content</code></a></li>
+<li><a href="#id267"><code>ds_name</code></a></li>
+<li><a href="#id268"><code>ds_type</code></a></li>
+<li><a href="#id269"><code>ensure</code></a></li>
+<li><a href="#id270"><code>name</code></a></li>
+<li>
+<a href="#id271"><code>provider</code></a><ul style="list-style: none;"><li><a href="#id272"><code>mcxcontent</code></a></li></ul>
+</li>
+</ul>
+</li></ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <h2 id='background'>Background</h2>
+
+<p>The default provider of this type merely manages the XML plist as reported by the <code>dscl -mcxexport command</code>. This is similar to the content property of the file type in Puppet.</p>
+
+<p>The recommended method of using this type is to use Work Group Manager to manage users and groups on the local computer, record the resulting puppet manifest using the command <code>ralsh mcx</code> then deploying this to other machines.</p>
+
+<h2 id='requirements'>Requirements</h2>
+
+<p>No additional requirements.</p>
+
+<h2 id='platforms'>Platforms</h2>
+
+<p>Only supported on OSX.</p>
+
+<h2 id='version_compatibility'>Version Compatibility</h2>
+<div class='warning'><p>This section has not been completed.</p></div>
+<h2 id='examples'>Examples</h2>
+<div class='warning'><p>This section has not been completed.</p></div>
+<h2 id='parameters'>Parameters</h2>
+
+<h3 id='id273'><code>content</code></h3>
+
+<p>The XML Plist. The value of <code>MCXSettings</code> in DirectoryService. This is the standard output from the system command:</p>
+
+<pre><code class='sh' lang='sh'>dscl localhost -mcxexport /Local/Default/&lt;ds_type&gt;/&lt;ds_name&gt;</code></pre>
+<div class='note'><p><code>ds_type</code> is capitalized and plural in the <code>dscl</code> command.</p></div>
+<h3 id='id274'><code>ds_name</code></h3>
+
+<p>The name to attach the MCX Setting to. e.g. <code>localhost</code> when <code>ds_type =&gt; computer</code>. This setting is not required, as it may be parsed so long as the resource name is parseable. e.g. <code>/Groups/admin</code> where <code>group</code> is the <code>dstype</code>.</p>
+
+<h3 id='id275'><code>ds_type</code></h3>
+
+<p>The DirectoryService type this MCX setting attaches to. Valid values are <code>user</code>, <code>group</code>, <code>computer</code>, <code>computerlist</code>.</p>
+
+<h3 id='id276'><code>ensure</code></h3>
+
+<p>Create or remove the MCX setting. Valid values are <code>present</code>, <code>absent</code>.</p>
+
+<h3 id='id277'><code>name</code></h3>
+
+<p>The name of the resource being managed. The default naming convention follows Directory Service paths:</p>
+
+<pre><code class='sh' lang='sh'>/Computers/localhost
+/Groups/admin
+/Users/localadmin</code></pre>
+
+<p>The <code>ds_type</code> and <code>ds_name</code> type parameters are not necessary if the default naming convention is followed.</p>
+<div class='info'><p>This is the <code>namevar</code> for this resource type.</p></div>
+<h3 id='id278'><code>provider</code></h3>
+
+<p>The specific backend for provider to use. You will seldom need to specify this &#8211; Puppet will usually discover the appropriate provider for your platform. Available providers are:</p>
+
+<h4 id='id279'><code>mcxcontent</code></h4>
+
+<p>MCX Settings management using DirectoryService on OS X.</p>
+
+<p>Required binaries:</p>
+
+<ul>
+<li><code>/usr/bin/dscl</code></li>
+</ul>
+<div class='note'><p>This provider was contributed by <a href='mailto:mccune.jeff@gmail.com'>Jeff McCune</a></p></div>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

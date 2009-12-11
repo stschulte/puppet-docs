@@ -1,0 +1,124 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="../../files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="../../files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="../../files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="../../index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="../../index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="../../introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="../../installation.html">Installing Puppet</a></dd>
+              <dd><a href="../../language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="../../types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="../../types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <h1 id='mailalias'>mailalias</h1>
+
+<p>Creates an email alias in the local alias database.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="../../images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#platforms">Platforms</a></li>
+<li><a href="#version_compatibility">Version Compatibility</a></li>
+<li><a href="#examples">Examples</a></li>
+<li>
+<a href="#parameters">Parameters</a><ul style="list-style: none;">
+<li><a href="#id237"><code>ensure</code></a></li>
+<li><a href="#id238"><code>name</code></a></li>
+<li>
+<a href="#id239"><code>provider</code></a><ul style="list-style: none;"><li><a href="#id240"><code>aliases</code></a></li></ul>
+</li>
+<li><a href="#id241"><code>recipient</code></a></li>
+<li><a href="#id242"><code>target</code></a></li>
+</ul>
+</li></ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <h2 id='requirements'>Requirements</h2>
+
+<p>No additional requirmements.</p>
+
+<h2 id='platforms'>Platforms</h2>
+
+<p>All platforms.</p>
+
+<h2 id='version_compatibility'>Version Compatibility</h2>
+<div class='warning'><p>This section has not been completed.</p></div>
+<h2 id='examples'>Examples</h2>
+<div class='warning'><p>This section has not been completed.</p></div>
+<h2 id='parameters'>Parameters</h2>
+
+<h3 id='id243'><code>ensure</code></h3>
+
+<p>The basic property that the resource should be in. Valid values are <code>present</code>, <code>absent</code>.</p>
+
+<h3 id='id244'><code>name</code></h3>
+
+<p>The alias name.</p>
+<div class='info'><p>This is the <code>namevar</code> for this resource type.</p></div>
+<h3 id='id245'><code>provider</code></h3>
+
+<p>The specific backend for provider to use. You will seldom need to specify this &#8211; Puppet will usually discover the appropriate provider for your platform. Available providers are:</p>
+
+<h4 id='id246'><code>aliases</code></h4>
+
+<h3 id='id247'><code>recipient</code></h3>
+
+<p>Where email should be sent. Multiple values should be specified as an array.</p>
+
+<h3 id='id248'><code>target</code></h3>
+
+<p>The file in which to store the aliases. Only used by those providers that write to disk.</p>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

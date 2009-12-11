@@ -1,0 +1,235 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="../../files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="../../files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="../../files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="../../index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="../../index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="../../introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="../../installation.html">Installing Puppet</a></dd>
+              <dd><a href="../../language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="../../types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="../../types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <h1 id='resource_types'>Resource Types</h1>
+
+<p>Resources Types are the building blocks of your Puppet configuration.</p>
+
+<ul>
+<li>This is a categorized listing of the standard types (see the <a href='alphabetical_index.html'>alphabetical listing</a>)</li>
+</ul>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="../../images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+<li>
+<a href="#introduction">Introduction</a><ul style="list-style: none;"><li><a href="#terms">Terms</a></li></ul>
+</li>
+<li>
+<a href="#standard_types">Standard Types</a><ul style="list-style: none;">
+<li><a href="#access__permissions">Access &amp; Permissions</a></li>
+<li><a href="#packaging">Packaging</a></li>
+<li><a href="#services">Services</a></li>
+<li><a href="#filesystems_and_containers">Filesystems and Containers</a></li>
+<li><a href="#hosts">Hosts</a></li>
+<li><a href="#configuration_files">Configuration Files</a></li>
+<li><a href="#mail">Mail</a></li>
+<li><a href="#monitoring">Monitoring</a></li>
+<li><a href="#security_policy">Security Policy</a></li>
+<li><a href="#executing_scripts">Executing Scripts</a></li>
+<li><a href="#puppet_tools">Puppet Tools</a></li>
+</ul>
+</li></ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <h2 id='introduction'>Introduction</h2>
+
+<h3 id='terms'>Terms</h3>
+
+<p>The <code>namevar</code> is the parameter used to uniquely identify a type instance. This is the parameter that gets assigned when a string is provided before the colon in a type declaration. In general, only developers will need to worry about which parameter is the <code>namevar</code>.</p>
+
+<p>In the following code:</p>
+
+<pre><code>file { &quot;/etc/passwd&quot;:
+    owner =&gt; root,
+    group =&gt; root,
+    mode =&gt; 644
+}</code></pre>
+
+<p><code>/etc/passwd</code> is considered the title of the file object (used for things like dependency handling), and because <code>path</code> is the namevar for <code>file</code>, that string is assigned to the <code>path</code> parameter.</p>
+
+<dl>
+<dt>Parameters</dt>
+
+<dd>Determine the specific configuration of the instance. They either directly modify the system (internally, these are called properties) or they affect how the instance behaves (e.g., adding a search path for <code>exec</code> instances or determining recursion on <code>file</code> instances).</dd>
+
+<dt>Providers</dt>
+
+<dd>Provide low-level functionality for a given resource type. This is usually in the form of calling out to external commands.</dd>
+</dl>
+
+<p>When required binaries are specified for providers, fully qualifed paths indicate that the binary must exist at that specific path and unqualified binaries indicate that Puppet will search for the binary using the shell path.</p>
+
+<dl>
+<dt>Features</dt>
+
+<dd>The abilities that some providers might not support. You can use the list of supported features to determine how a given provider can be used.</dd>
+</dl>
+
+<p>Resource types define features they can use, and providers can be tested to see which features they provide.</p>
+
+<h2 id='standard_types'>Standard Types</h2>
+
+<h3 id='access__permissions'>Access &amp; Permissions</h3>
+
+<ul>
+<li><a href='file.html'>file</a></li>
+
+<li><a href='group.html'>group</a></li>
+
+<li><a href='user.html'>user</a></li>
+
+<li><a href='k5login.html'>k5login</a></li>
+
+<li><a href='macauthorization.html'>macauthorization</a> (OSX-only)</li>
+
+<li><a href='mcx.html'>mcx</a> (OSX-only)</li>
+
+<li>See the <a href='ssh/'>ssh</a> types</li>
+</ul>
+
+<h3 id='packaging'>Packaging</h3>
+
+<ul>
+<li><a href='package.html'>package</a></li>
+
+<li><a href='yumrepo.html'>yumrepo</a></li>
+</ul>
+
+<h3 id='services'>Services</h3>
+
+<ul>
+<li><a href='service.html'>service</a></li>
+
+<li><a href='cron.html'>cron</a></li>
+</ul>
+
+<h3 id='filesystems_and_containers'>Filesystems and Containers</h3>
+
+<ul>
+<li><a href='file.html'>file</a></li>
+
+<li><a href='mount.html'>mount</a></li>
+
+<li><a href='zfs.html'>zfs</a></li>
+
+<li><a href='zone.html'>zone</a> (Solaris-only)</li>
+
+<li><a href='zpool.html'>zpool</a></li>
+</ul>
+
+<h3 id='hosts'>Hosts</h3>
+
+<ul>
+<li><a href='host.html'>host</a></li>
+
+<li><a href='computer.html'>computer</a> (OSX-only)</li>
+</ul>
+
+<h3 id='configuration_files'>Configuration Files</h3>
+
+<ul>
+<li><a href='augeas.html'>augeas</a></li>
+</ul>
+
+<h3 id='mail'>Mail</h3>
+
+<ul>
+<li><a href='mailalias.html'>mailalias</a></li>
+
+<li><a href='maillist.html'>maillist</a></li>
+</ul>
+
+<h3 id='monitoring'>Monitoring</h3>
+
+<ul>
+<li>See the <a href='nagios/'>nagios</a> types</li>
+</ul>
+
+<h3 id='security_policy'>Security Policy</h3>
+
+<ul>
+<li>See the <a href='selinux/'>selinux</a> types (SELinux-only)</li>
+</ul>
+
+<h3 id='executing_scripts'>Executing Scripts</h3>
+
+<ul>
+<li><a href='exec.html'>exec</a></li>
+</ul>
+<hr />
+<h3 id='puppet_tools'>Puppet Tools</h3>
+
+<ul>
+<li><a href='filebucket.html'>filebucket</a></li>
+
+<li><a href='notify.html'>notify</a></li>
+
+<li><a href='resources.html'>resources</a></li>
+
+<li><a href='schedule.html'>schedule</a></li>
+
+<li><a href='tidy.html'>tidy</a></li>
+</ul>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

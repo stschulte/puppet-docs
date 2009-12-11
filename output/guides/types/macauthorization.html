@@ -1,0 +1,191 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="../../files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="../../files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="../../files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="../../index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="../../index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="../../introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="../../installation.html">Installing Puppet</a></dd>
+              <dd><a href="../../language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="../../types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="../../types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <h1 id='macauthorization'>macauthorization</h1>
+
+<p>Manage the Mac OS X authorization database.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="../../images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+<li><a href="#background">Background</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#platforms">Platforms</a></li>
+<li><a href="#version_compatibility">Version Compatibility</a></li>
+<li>
+<a href="#parameters">Parameters</a><ul style="list-style: none;">
+<li><a href="#id203"><code>allow_root</code></a></li>
+<li><a href="#id204"><code>auth_class</code></a></li>
+<li><a href="#id205"><code>auth_type</code></a></li>
+<li><a href="#id206"><code>authenticate_user</code></a></li>
+<li><a href="#id207"><code>comment</code></a></li>
+<li><a href="#id208"><code>ensure</code></a></li>
+<li><a href="#id209"><code>group</code></a></li>
+<li><a href="#id210"><code>k_of_n</code></a></li>
+<li><a href="#id211"><code>mechanisms</code></a></li>
+<li><a href="#id212"><code>name</code></a></li>
+<li>
+<a href="#id213"><code>provider</code></a><ul style="list-style: none;"><li><a href="#id214"><code>macauthorization</code></a></li></ul>
+</li>
+<li><a href="#id215"><code>rule</code></a></li>
+<li><a href="#id216"><code>session_owner</code></a></li>
+<li><a href="#id217"><code>shared</code></a></li>
+<li><a href="#id218"><code>timeout</code></a></li>
+<li><a href="#id219"><code>tries</code></a></li>
+</ul>
+</li></ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <h2 id='background'>Background</h2>
+
+<p>See the Apple <a href='http://developer.apple.com/documentation/Security/Conceptual/Security_Overview/Security_Services/chapter_4_section_5.html'>Security Service page</a> for more information.</p>
+
+<h2 id='requirements'>Requirements</h2>
+
+<p>No additional requirements.</p>
+
+<h2 id='platforms'>Platforms</h2>
+
+<p>OSX is the only supported platform.</p>
+
+<h2 id='version_compatibility'>Version Compatibility</h2>
+<div class='warning'><p>This section has not been completed.</p></div>
+<h2 id='parameters'>Parameters</h2>
+
+<h3 id='id220'><code>allow_root</code></h3>
+
+<p>Corresponds to &#8216;allow-root&#8217; in the authorization store, renamed due to hyphens being problematic. Specifies whether a right should be allowed automatically if the requesting process is running with uid == 0. AuthorizationServices defaults this attribute to <code>false</code> if not specified. Valid values are <code>true</code>, <code>false</code>.</p>
+
+<h3 id='id221'><code>auth_class</code></h3>
+
+<p>Corresponds to &#8216;class&#8217; in the authorization store, renamed due to &#8216;class&#8217; being a reserved word. Valid values are <code>user</code>, <code>evaluate-mechanisms</code>, <code>allow</code>, <code>deny</code>, <code>rule</code>.</p>
+
+<h3 id='id222'><code>auth_type</code></h3>
+
+<p>Can be a &#8216;right&#8217; or a &#8216;rule&#8217;. &#8216;comment&#8217; has not yet been implemented. Valid values are <code>right</code>, <code>rule</code>.</p>
+
+<h3 id='id223'><code>authenticate_user</code></h3>
+
+<p>Corresponds to &#8216;authenticate-user&#8217; in the authorization store, renamed due to hyphens being problematic. Valid values are <code>true</code>, <code>false</code>.</p>
+
+<h3 id='id224'><code>comment</code></h3>
+
+<p>The &#8216;comment&#8217; attribute for authorization resources.</p>
+
+<h3 id='id225'><code>ensure</code></h3>
+
+<p>The basic property that the resource should be in. Valid values are <code>present</code>, <code>absent</code>.</p>
+
+<h3 id='id226'><code>group</code></h3>
+
+<p>The user must authenticate as a member of this group. This attribute can be set to any one group.</p>
+
+<h3 id='id227'><code>k_of_n</code></h3>
+
+<p><em>k-of-n</em> describes how large a subset of rule mechanisms must succeed for successful authentication. If there are &#8216;n&#8217; mechanisms, then &#8216;k&#8217; (the integer value of this parameter) mechanisms must succeed. The most common setting for this parameter is &#8216;1&#8217;. If k-of-n is not set, then &#8216;n-of-n&#8217; mechanisms must succeed.</p>
+
+<h3 id='id228'><code>mechanisms</code></h3>
+
+<p>an array of suitable mechanisms.</p>
+
+<h3 id='id229'><code>name</code></h3>
+
+<p>The name of the right or rule to be managed. Corresponds to &#8216;key&#8217; in Authorization Services. The key is the name of a rule. A key uses the same naming conventions as a right. The Security Server uses a rule’s key to match the rule with a right. Wildcard keys end with a ‘.’. The generic rule has an empty key value. Any rights that do not match a specific rule use the generic rule.</p>
+<div class='info'><p>This is the <code>namevar</code> for this resource type.</p></div>
+<h3 id='id230'><code>provider</code></h3>
+
+<p>The specific backend for provider to use. You will seldom need to specify this &#8211; Puppet will usually discover the appropriate provider for your platform. Available providers are:</p>
+
+<h4 id='id231'><code>macauthorization</code></h4>
+
+<p>Manage Mac OS X authorization database rules and rights.</p>
+
+<p>Required binaries:</p>
+
+<ul>
+<li><code>/usr/bin/security</code></li>
+
+<li><code>/usr/bin/sw_vers</code></li>
+</ul>
+<div class='note'><p>Default for <code>operatingsystem</code> == <code>darwin</code>.</p></div>
+<h3 id='id232'><code>rule</code></h3>
+
+<p>The rule(s) that this right refers to.</p>
+
+<h3 id='id233'><code>session_owner</code></h3>
+
+<p>Corresponds to &#8216;session-owner&#8217; in the authorization store, renamed due to hyphens being problematic. Whether the session owner automatically matches this rule or right. Valid values are <code>true</code>, <code>false</code>.</p>
+
+<h3 id='id234'><code>shared</code></h3>
+
+<p>If this is set to <code>true</code>, then the Security Server marks the credentials used to gain this right as shared. The Security Server may use any shared credentials to authorize this right. For maximum security, set sharing to false so credentials stored by the Security Server for one application may not be used by another application. Valid values are <code>true</code>, <code>false</code>.</p>
+
+<h3 id='id235'><code>timeout</code></h3>
+
+<p>The credential used by this rule expires in the specified number of seconds. For maximum security where the user must authenticate every time, set the timeout to 0. For minimum security, remove the timeout attribute so the user authenticates only once per session.</p>
+
+<h3 id='id236'><code>tries</code></h3>
+
+<p>The number of tries allowed.</p>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

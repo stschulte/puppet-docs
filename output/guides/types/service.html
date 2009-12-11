@@ -1,0 +1,412 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="../../files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="../../files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="../../files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="../../index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="../../index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="../../introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="../../installation.html">Installing Puppet</a></dd>
+              <dd><a href="../../language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="../../types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="../../types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <p>service</p>
+
+<p>Manage running services. Service support unfortunately varies widely by platform &#8211; some platforms have very little if any concept of a running service, and some have a very codified and powerful concept. Puppet&#8217;s service support will generally be able to make up for any inherent shortcomings (e.g., if there is no &#8216;status&#8217; command, then Puppet will look in the process table for a command matching the service name), but the more information you can provide the better behaviour you will get. Or, you can just use a platform that has very good service support.</p>
+
+<p>Note that if a <code>service</code> receives an event from another resource, the service will get restarted. The actual command to restart the service depends on the platform. You can provide a special command for restarting with the <code>restart</code> attribute.</p>
+
+<h3 id='features'>Features</h3>
+
+<ul>
+<li><strong>controllable</strong>: The provider uses a control variable.</li>
+
+<li><strong>enableable</strong>: The provider can enable and disable the service</li>
+
+<li><strong>refreshable</strong>: The provider can restart the service.</li>
+</ul>
+
+<h1 id='controllable_enableable_refreshable__'>controllable enableable refreshable =========== ============</h1>
+
+<p><strong>X</strong> <strong>X</strong> freebsd <strong>X</strong> <strong>X</strong> gentoo <strong>X</strong> <strong>X</strong> init <strong>X</strong> launchd <strong>X</strong> <strong>X</strong> redhat <strong>X</strong> <strong>X</strong> runit <strong>X</strong> <strong>X</strong> smf <strong>X</strong> <strong>X</strong> =========== ============ ========== ===========</p>
+
+<h3 id='parameters'>Parameters</h3>
+
+<h4 id='binary'>binary</h4>
+
+<p>The path to the daemon. This is only used for systems that do not support init scripts. This binary will be used to start the service if no <code>start</code> parameter is provided.</p>
+
+<h4 id='control'>control</h4>
+
+<p>The control variable used to manage services (originally for HP-UX). Defaults to the upcased service name plus <code>START</code> replacing dots with underscores, for those providers that support the <code>controllable</code> feature.</p>
+
+<h4 id='enable'>enable</h4>
+
+<p>Whether a service should be enabled to start at boot. This property behaves quite differently depending on the platform; wherever possible, it relies on local tools to enable or disable a given service. Valid values are <code>true</code>, <code>false</code>. Requires features enableable.</p>
+
+<h4 id='ensure'>ensure</h4>
+
+<p>Whether a service should be running. Valid values are <code>stopped</code> (also called <code>false</code>), <code>running</code> (also called <code>true</code>).</p>
+
+<h4 id='hasrestart'>hasrestart</h4>
+
+<p>Specify that an init script has a <code>restart</code> option. Otherwise, the init script&#8217;s <code>stop</code> and <code>start</code> methods are used. Valid values are <code>true</code>, <code>false</code>.</p>
+
+<h4 id='hasstatus'>hasstatus</h4>
+
+<p>Declare the the service&#8217;s init script has a functional status command. Based on testing, it was found that a large number of init scripts on different platforms do not support any kind of status command; thus, you must specify manually whether the service you are running has such a command (or you can specify a specific command using the <code>status</code> parameter).</p>
+
+<p>If you do not specify anything, then the service name will be looked for in the process table. Valid values are <code>true</code>, <code>false</code>.</p>
+
+<h4 id='manifest'>manifest</h4>
+
+<p>Specify a command to config a service, or a path to a manifest to do so.</p>
+
+<h4 id='name'>name</h4>
+
+<ul>
+<li><strong>namevar</strong></li>
+</ul>
+
+<p>The name of the service to run. This name is used to find the service in whatever service subsystem it is in.</p>
+
+<h4 id='path'>path</h4>
+
+<p>The search path for finding init scripts. Multiple values should be separated by colons or provided as an array.</p>
+
+<h4 id='pattern'>pattern</h4>
+
+<p>The pattern to search for in the process table. This is used for stopping services on platforms that do not support init scripts, and is also used for determining service status on those service whose init scripts do not include a status command.</p>
+
+<p>If this is left unspecified and is needed to check the status of a service, then the service name will be used instead.</p>
+
+<p>The pattern can be a simple string or any legal Ruby pattern.</p>
+
+<h4 id='provider'>provider</h4>
+
+<p>The specific backend for provider to use. You will seldom need to specify this &#8211; Puppet will usually discover the appropriate provider for your platform. Available providers are:</p>
+
+<ul>
+<li>
+<p><strong>base</strong>: The simplest form of service support.</p>
+
+<blockquote>
+<p>You have to specify enough about your service for this to work; the minimum you can specify is a binary for starting the process, and this same binary will be searched for in the process table to stop the service. It is preferable to specify start, stop, and status commands, akin to how you would do so using <code>init</code>.</p>
+
+<blockquote>
+<p>Required binaries: <code>kill</code>. Supported features: <code>refreshable</code>.</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p><strong>daemontools</strong>: Daemontools service management.</p>
+
+<blockquote>
+<p>This provider manages daemons running supervised by D.J.Bernstein daemontools. It tries to detect the service directory, with by order of preference:</p>
+
+<ul>
+<li>/service</li>
+
+<li>/etc/service</li>
+
+<li>/var/lib/svscan</li>
+</ul>
+
+<p>The daemon directory should be placed in a directory that can be by default in:</p>
+
+<ul>
+<li>/var/lib/service</li>
+
+<li>/etc</li>
+</ul>
+
+<p>or this can be overriden in the service resource parameters:</p>
+
+<pre><code>service {
+ &quot;myservice&quot;:
+   provider =&gt; &quot;daemontools&quot;, path =&gt; &quot;/path/to/daemons&quot;;
+}</code></pre>
+
+<p>This provider supports out of the box:</p>
+
+<ul>
+<li>start/stop (mapped to enable/disable)</li>
+
+<li>enable/disable</li>
+
+<li>restart</li>
+
+<li>status</li>
+</ul>
+
+<p>If a service has ensure =&gt; &#8220;running&#8221;, it will link /path/to/daemon to /path/to/service, which will automatically enable the service.</p>
+
+<p>If a service has ensure =&gt; &#8220;stopped&#8221;, it will only down the service, not remove the /path/to/service link.</p>
+
+<blockquote>
+<p>Required binaries: <code>/usr/bin/svstat</code>, <code>/usr/bin/svc</code>. Supported features: <code>enableable</code>, <code>refreshable</code>.</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p><strong>debian</strong>: Debian&#8217;s form of <code>init</code>-style management.</p>
+
+<blockquote>
+<p>The only difference is that this supports service enabling and disabling via <code>update-rc.d</code> and determines enabled status via <code>invoke-rc.d</code>.</p>
+
+<blockquote>
+<p>Required binaries: <code>/usr/sbin/update-rc.d</code>, <code>/usr/sbin/invoke-rc.d</code>. Default for <code>operatingsystem</code> == <code>debianubuntu</code>. Supported features: <code>enableable</code>, <code>refreshable</code>.</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p><strong>freebsd</strong>: FreeBSD&#8217;s (and probably NetBSD?) form of <code>init</code>-style service management.</p>
+
+<blockquote>
+<p>Uses <code>rc.conf.d</code> for service enabling and disabling.</p>
+
+<p>Default for <code>operatingsystem</code> == <code>freebsd</code>. Supported features: <code>enableable</code>, <code>refreshable</code>.</p>
+</blockquote>
+</li>
+
+<li>
+<p><strong>gentoo</strong>: Gentoo&#8217;s form of <code>init</code>-style service management.</p>
+
+<blockquote>
+<p>Uses <code>rc-update</code> for service enabling and disabling.</p>
+
+<blockquote>
+<h1 id='required_binaries__default_for_'>Required binaries: <code>/sbin/rc-update</code>. Default for <code>operatingsystem</code></h1>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p><strong>init</strong>: Standard init service management.</p>
+
+<blockquote>
+<p>This provider assumes that the init script has no <code>status</code> command, because so few scripts do, so you need to either provide a status command or specify via <code>hasstatus</code> that one already exists in the init script.</p>
+
+<blockquote>
+<p>Supported features: <code>refreshable</code>.</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p><strong>launchd</strong>: launchd service management framework.</p>
+
+<blockquote>
+<p>This provider manages launchd jobs, the default service framework for Mac OS X, that has also been open sourced by Apple for possible use on other platforms.</p>
+
+<dl>
+<dt>See:</dt>
+
+<dd>
+<li><a href='http://developer.apple.com/macosx/launchd.html'>http://developer.apple.com/macosx/launchd.html</a></li>
+
+<li><a href='http://launchd.macosforge.org/'>http://launchd.macosforge.org/</a></li>
+</dd>
+
+<dt>This provider reads plists out of the following directories:</dt>
+
+<dd>
+<li>/System/Library/LaunchDaemons</li>
+
+<li>/System/Library/LaunchAgents</li>
+
+<li>/Library/LaunchDaemons</li>
+
+<li>/Library/LaunchAgents</li>
+</dd>
+</dl>
+
+<p>and builds up a list of services based upon each plists &#8220;Label&#8221; entry.</p>
+
+<dl>
+<dt>This provider supports:</dt>
+
+<dd>
+<li>ensure =&gt; running/stopped,</li>
+
+<li>enable =&gt; true/false</li>
+
+<li>status</li>
+
+<li>restart</li>
+</dd>
+
+<dt>Here is how the Puppet states correspond to launchd states:</dt>
+
+<dd>
+<li>stopped =&gt; job unloaded</li>
+
+<li>started =&gt; job loaded</li>
+
+<li>enabled =&gt; &#8216;Disable&#8217; removed from job plist file</li>
+
+<li>disabled =&gt; &#8216;Disable&#8217; added to job plist file</li>
+</dd>
+</dl>
+
+<p>Note that this allows you to do something launchctl can&#8217;t do, which is to be in a state of &#8220;stopped/enabled or &#8220;running/disabled&#8221;.</p>
+
+<blockquote>
+<p>Required binaries: <code>/usr/bin/sw_vers</code>, <code>/bin/launchctl</code>. Default for <code>operatingsystem</code> == <code>darwin</code>. Supported features: <code>enableable</code>, <code>refreshable</code>.</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p><strong>redhat</strong>: Red Hat&#8217;s (and probably many others) form of <code>init</code>-style service management:</p>
+
+<blockquote>
+<p>Uses <code>chkconfig</code> for service enabling and disabling.</p>
+
+<blockquote>
+<p>Required binaries: <code>/sbin/chkconfig</code>, <code>/sbin/service</code>. Default for <code>operatingsystem</code> == <code>redhatfedorasusecentosslesoelovm</code>. Supported features: <code>enableable</code>, <code>refreshable</code>.</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p><strong>runit</strong>: Runit service management.</p>
+
+<p>This provider manages daemons running supervised by Runit. It tries to detect the service directory, with by order of preference:</p>
+
+<blockquote>
+<ul>
+<li>/service</li>
+
+<li>/var/service</li>
+
+<li>/etc/service</li>
+</ul>
+</blockquote>
+
+<p>The daemon directory should be placed in a directory that can be by default in:</p>
+
+<blockquote>
+<ul>
+<li>/etc/sv</li>
+</ul>
+</blockquote>
+
+<p>or this can be overriden in the service resource parameters:</p>
+
+<pre><code>service {
+ &quot;myservice&quot;:
+   provider =&gt; &quot;runit&quot;, path =&gt; &quot;/path/to/daemons&quot;;
+}</code></pre>
+
+<p>This provider supports out of the box:</p>
+
+<blockquote>
+<ul>
+<li>start/stop</li>
+
+<li>enable/disable</li>
+
+<li>restart</li>
+
+<li>status</li>
+</ul>
+</blockquote>
+
+<p>Required binaries: <code>/usr/bin/sv</code>. Supported features: <code>enableable</code>, <code>refreshable</code>.</p>
+</li>
+
+<li>
+<p><strong>smf</strong>: Support for Sun&#8217;s new Service Management Framework.</p>
+
+<blockquote>
+<p>Starting a service is effectively equivalent to enabling it, so there is only support for starting and stopping services, which also enables and disables them, respectively.</p>
+
+<p>By specifying manifest =&gt; &#8220;/path/to/service.xml&#8221;, the SMF manifest will be imported if it does not exist.</p>
+
+<blockquote>
+<p>Required binaries: <code>/usr/sbin/svcadm</code>, <code>/usr/bin/svcs</code>, <code>/usr/sbin/svccfg</code>. Default for <code>operatingsystem</code> == <code>solaris</code>. Supported features: <code>enableable</code>, <code>refreshable</code>.</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+
+<h4 id='restart'>restart</h4>
+
+<p>Specify a <em>restart</em> command manually. If left unspecified, the service will be stopped and then started.</p>
+
+<h4 id='start'>start</h4>
+
+<p>Specify a <em>start</em> command manually. Most service subsystems support a <code>start</code> command, so this will not need to be specified.</p>
+
+<h4 id='status'>status</h4>
+
+<p>Specify a <em>status</em> command manually. If left unspecified, the status method will be determined automatically, usually by looking for the service in the process table.</p>
+
+<h4 id='stop'>stop</h4>
+
+<p>Specify a <em>stop</em> command manually.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="../../images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+</ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <p>* *</p>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

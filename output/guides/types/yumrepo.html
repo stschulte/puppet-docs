@@ -1,0 +1,168 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="../../files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="../../files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="../../files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="../../index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="../../index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="../../introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="../../installation.html">Installing Puppet</a></dd>
+              <dd><a href="../../language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="../../types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="../../types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <p>yumrepo</p>
+
+<p>The client-side description of a yum repository. Repository configurations are found by parsing /etc/yum.conf and the files indicated by reposdir in that file (see yum.conf(5) for details)</p>
+
+<p>Most parameters are identical to the ones documented in yum.conf(5)</p>
+
+<p>Continuation lines that yum supports for example for the baseurl are not supported. No attempt is made to access files included with the <strong>include</strong> directive</p>
+
+<h3 id='parameters'>Parameters</h3>
+
+<h4 id='baseurl'>baseurl</h4>
+
+<p>The URL for this repository. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/.*/</code>.</p>
+
+<h4 id='descr'>descr</h4>
+
+<p>A human readable description of the repository. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/.*/</code>.</p>
+
+<h4 id='enabled'>enabled</h4>
+
+<p>Whether this repository is enabled or disabled. Possible values are &#8216;0&#8217;, and &#8216;1&#8217;. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/(0|1)/</code>.</p>
+
+<h4 id='enablegroups'>enablegroups</h4>
+
+<p>Determines whether yum will allow the use of package groups for this repository. Possible values are &#8216;0&#8217;, and &#8216;1&#8217;. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/(0|1)/</code>.</p>
+
+<h4 id='exclude'>exclude</h4>
+
+<p>List of shell globs. Matching packages will never be considered in updates or installs for this repo. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/.*/</code>.</p>
+
+<h4 id='failovermethod'>failovermethod</h4>
+
+<p>Either &#8216;roundrobin&#8217; or &#8216;priority&#8217;. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/roundrobin|priority/</code>.</p>
+
+<h4 id='gpgcheck'>gpgcheck</h4>
+
+<p>Whether to check the GPG signature on packages installed from this repository. Possible values are &#8216;0&#8217;, and &#8216;1&#8217;.</p>
+
+<p>Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/(0|1)/</code>.</p>
+
+<h4 id='gpgkey'>gpgkey</h4>
+
+<p>The URL for the GPG key with which packages from this repository are signed. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/.*/</code>.</p>
+
+<h4 id='include'>include</h4>
+
+<p>A URL from which to include the config. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/.*/</code>.</p>
+
+<h4 id='includepkgs'>includepkgs</h4>
+
+<p>List of shell globs. If this is set, only packages matching one of the globs will be considered for update or install. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/.*/</code>.</p>
+
+<h4 id='keepalive'>keepalive</h4>
+
+<p>Either &#8216;1&#8217; or &#8216;0&#8217;. This tells yum whether or not HTTP/1.1 keepalive should be used with this repository. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/(0|1)/</code>.</p>
+
+<h4 id='metadata_expire'>metadata_expire</h4>
+
+<p>Number of seconds after which the metadata will expire. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/[0-9]+/</code>.</p>
+
+<h4 id='mirrorlist'>mirrorlist</h4>
+
+<p>The URL that holds the list of mirrors for this repository. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/.*/</code>.</p>
+
+<h4 id='name'>name</h4>
+
+<ul>
+<li><strong>namevar</strong></li>
+</ul>
+
+<p>The name of the repository.</p>
+
+<h4 id='priority'>priority</h4>
+
+<p>Priority of this repository from 1-99. Requires that the priorities plugin is installed and enabled. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/[1-9][0-9]?/</code>.</p>
+
+<h4 id='protect'>protect</h4>
+
+<p>Enable or disable protection for this repository. Requires that the protectbase plugin is installed and enabled. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/(0|1)/</code>.</p>
+
+<h4 id='proxy'>proxy</h4>
+
+<p>URL to the proxy server for this repository. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/.*/</code>.</p>
+
+<h4 id='proxy_password'>proxy_password</h4>
+
+<p>Password for this proxy. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/.*/</code>.</p>
+
+<h4 id='proxy_username'>proxy_username</h4>
+
+<p>Username for this proxy. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/.*/</code>.</p>
+
+<h4 id='timeout'>timeout</h4>
+
+<p>Number of seconds to wait for a connection before timing out. Set this to &#8216;absent&#8217; to remove it from the file completely Valid values are <code>absent</code>. Values can match <code>/[0-9]+/</code>.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="../../images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+</ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <p>* *</p>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,185 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="../../files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="../../files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="../../files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="../../index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="../../index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="../../introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="../../installation.html">Installing Puppet</a></dd>
+              <dd><a href="../../language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="../../types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="../../types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <h1 id='mount'>mount</h1>
+
+<p>Manages mounted filesystems</p>
+
+<ul>
+<li>Mounts/unmounts filesystems.</li>
+
+<li>Persists mount information in the mount table.</li>
+</ul>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="../../images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+<li><a href="#background">Background</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#platforms">Platforms</a></li>
+<li><a href="#version_compatibility">Version Compatibility</a></li>
+<li><a href="#examples">Examples</a></li>
+<li>
+<a href="#parameters">Parameters</a><ul style="list-style: none;">
+<li><a href="#id280"><code>atboot</code></a></li>
+<li><a href="#id281"><code>blockdevice</code></a></li>
+<li><a href="#id282"><code>device</code></a></li>
+<li><a href="#id283"><code>dump</code></a></li>
+<li><a href="#id284"><code>ensure</code></a></li>
+<li><a href="#id285"><code>fstype</code></a></li>
+<li><a href="#id286"><code>name</code></a></li>
+<li><a href="#id287"><code>options</code></a></li>
+<li><a href="#id288"><code>pass</code></a></li>
+<li><a href="#id289"><code>path</code></a></li>
+<li>
+<a href="#id290"><code>provider</code></a><ul style="list-style: none;"><li><a href="#id291"><code>parsed</code></a></li></ul>
+</li>
+<li><a href="#id292"><code>remounts</code></a></li>
+<li><a href="#id293"><code>target</code></a></li>
+</ul>
+</li></ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <h2 id='background'>Background</h2>
+
+<p>The actual behavior depends on the value of the <span><code>ensure</code></span> parameter.</p>
+
+<h2 id='requirements'>Requirements</h2>
+
+<p>No additional requirements.</p>
+
+<h2 id='platforms'>Platforms</h2>
+
+<p>Supported on all platforms with the <code>mount</code> and <code>umount</code> executables needed by the <span>provider</span>.</p>
+
+<h2 id='version_compatibility'>Version Compatibility</h2>
+<div class='warning'><p>This section has not been completed.</p></div>
+<h2 id='examples'>Examples</h2>
+<div class='warning'><p>This section has not been completed.</p></div>
+<h2 id='parameters'>Parameters</h2>
+
+<h3 id='id294'><code>atboot</code></h3>
+
+<p>Whether to mount the mount at boot. Not all platforms support this.</p>
+
+<h3 id='id295'><code>blockdevice</code></h3>
+
+<p>The device to fsck. This is property is only valid on Solaris, and in most cases will default to the correct value.</p>
+
+<h3 id='id296'><code>device</code></h3>
+
+<p>The device providing the mount. This can be whatever device is supporting by the mount, including network devices or devices specified by UUID rather than device path, depending on the operating system.</p>
+
+<h3 id='id297'><code>dump</code></h3>
+
+<p>Whether to dump the mount. Not all platforms + support this. Valid values are <code>1</code> or <code>0</code>. or <code>2</code> on FreeBSD, Default is <code>0</code>. Values can match <code>/(0|1)/</code>, <code>/(0|1)/</code>.</p>
+
+<h3 id='id298'><code>ensure</code></h3>
+
+<p>Control what to do with this mount. Set this attribute to <code>present</code> to make sure the filesystem is in the filesystem table but not mounted (if the filesystem is currently mounted, it will be unmounted). Set it to <code>absent</code> to unmount (if necessary) and remove the filesystem from the fstab. Set to <code>mounted</code> to add it to the fstab and mount it. Valid values are <code>present</code> (also called <code>unmounted</code>), <code>absent</code>, <code>mounted</code>.</p>
+<div class='note'><p>If a <code>mount</code> receives an event from another resource, it will try to remount the filesystems if <code>ensure</code> is set to <code>mounted</code>.</p></div>
+<h3 id='id299'><code>fstype</code></h3>
+
+<p>The mount type. Valid values depend on the operating system.</p>
+
+<h3 id='id300'><code>name</code></h3>
+
+<p>The mount path for the mount.</p>
+<div class='info'><p>This is the <code>namevar</code> for this resource type.</p></div>
+<h3 id='id301'><code>options</code></h3>
+
+<p>Mount options for the mounts, as they would appear in the fstab.</p>
+
+<h3 id='id302'><code>pass</code></h3>
+
+<p>The pass in which the mount is checked.</p>
+
+<h3 id='id303'><code>path</code></h3>
+<div class='warning'><p>The deprecated name for the mount point. Please use <code>name</code>.</p></div><div class='warning'><p>This section has not been completed.</p></div>
+<h3 id='id304'><code>provider</code></h3>
+
+<p>The specific backend for provider to use. You will seldom need to specify this &#8211; Puppet will usually discover the appropriate provider for your platform. Available providers are:</p>
+
+<h4 id='id305'><code>parsed</code></h4>
+
+<p>Required binaries:</p>
+
+<ul>
+<li><code>mount</code></li>
+
+<li><code>umount</code></li>
+</ul>
+
+<h3 id='id306'><code>remounts</code></h3>
+
+<p>Whether the mount can be remounted with:</p>
+
+<pre><code class='sh' lang='sh'>mount -o remount</code></pre>
+
+<p>If this is <code>false</code>, then the filesystem will be unmounted and remounted manually, which is prone to failure. Valid values are <code>true</code>, <code>false</code>.</p>
+
+<h3 id='id307'><code>target</code></h3>
+
+<p>The file in which to store the mount table. Only used by those providers that write to disk.</p>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

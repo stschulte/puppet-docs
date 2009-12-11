@@ -1,0 +1,322 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="../../files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="../../files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="../../files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="../../index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="../../index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="../../introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="../../installation.html">Installing Puppet</a></dd>
+              <dd><a href="../../language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="../../types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="../../types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <p>package</p>
+
+<p>Manage packages. There is a basic dichotomy in package support right now: Some package types (e.g., yum and apt) can retrieve their own package files, while others (e.g., rpm and sun) cannot. For those package formats that cannot retrieve their own files, you can use the <code>source</code> parameter to point to the correct file.</p>
+
+<p>Puppet will automatically guess the packaging format that you are using based on the platform you are on, but you can override it using the <code>provider</code> parameter; each provider defines what it requires in order to function, and you must meet those requirements to use a given provider.</p>
+
+<h3 id='features'>Features</h3>
+
+<ul>
+<li><strong>installable</strong>: The provider can install packages.</li>
+
+<li><strong>purgeable</strong>: The provider can purge packages. This generally means that all traces of the package are removed, including existing configuration files. This feature is thus destructive and should be used with the utmost care.</li>
+
+<li><strong>uninstallable</strong>: The provider can uninstall packages.</li>
+
+<li><strong>upgradeable</strong>: The provider can upgrade to the latest version of a package. This feature is used by specifying <code>latest</code> as the desired value for the package.</li>
+
+<li><strong>versionable</strong>: The provider is capable of interrogating the package database for installed version(s), and can select which out of a set of available versions of a package to install if asked.</li>
+</ul>
+
+<h1 id='upgradeable_versionable___'>upgradeable versionable =========== =========== =========</h1>
+
+<p><strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> aptitude <strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> aptrpm <strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> blastwave <strong>X</strong> <strong>X</strong> <strong>X</strong> darwinport <strong>X</strong> <strong>X</strong> <strong>X</strong> dpkg <strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> fink <strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> freebsd <strong>X</strong> <strong>X</strong> gem <strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> hpux <strong>X</strong> <strong>X</strong> openbsd <strong>X</strong> <strong>X</strong> pkgdmg <strong>X</strong> portage <strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> ports <strong>X</strong> <strong>X</strong> <strong>X</strong> rpm <strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> rug <strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> sun <strong>X</strong> <strong>X</strong> <strong>X</strong> sunfreeware <strong>X</strong> <strong>X</strong> <strong>X</strong> up2date <strong>X</strong> <strong>X</strong> <strong>X</strong> urpmi <strong>X</strong></p>
+
+<h1 id='x_x_x_yum_x_x_x_x_x_'><strong>X</strong> <strong>X</strong> <strong>X</strong> yum <strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> ===========</h1>
+
+<h3 id='parameters'>Parameters</h3>
+
+<h4 id='adminfile'>adminfile</h4>
+
+<p>A file containing package defaults for installing packages. This is currently only used on Solaris. The value will be validated according to system rules, which in the case of Solaris means that it should either be a fully qualified path or it should be in /var/sadm/install/admin.</p>
+
+<h4 id='allowcdrom'>allowcdrom</h4>
+
+<p>Tells apt to allow cdrom sources in the sources.list file. Normally apt will bail if you try this. Valid values are <code>true</code>, <code>false</code>.</p>
+
+<h4 id='category'>category</h4>
+
+<p>A read-only parameter set by the package.</p>
+
+<h4 id='configfiles'>configfiles</h4>
+
+<p>Whether configfiles should be kept or replaced. Most packages types do not support this parameter. Valid values are <code>keep</code>, <code>replace</code>.</p>
+
+<h4 id='description'>description</h4>
+
+<p>A read-only parameter set by the package.</p>
+
+<h4 id='ensure'>ensure</h4>
+
+<p>What state the package should be in. <em>latest</em> only makes sense for those packaging formats that can retrieve new packages on their own and will throw an error on those that cannot. For those packaging systems that allow you to specify package versions, specify them here. Similarly, <em>purged</em> is only useful for packaging systems that support the notion of managing configuration files separately from &#8216;normal&#8217; system files. Valid values are <code>present</code> (also called <code>installed</code>), <code>absent</code>, <code>purged</code>, <code>latest</code>. Values can match <code>/./</code>.</p>
+
+<h4 id='instance'>instance</h4>
+
+<p>A read-only parameter set by the package.</p>
+
+<h4 id='name'>name</h4>
+
+<ul>
+<li><strong>namevar</strong></li>
+</ul>
+
+<p>The package name. This is the name that the packaging system uses internally, which is sometimes (especially on Solaris) a name that is basically useless to humans. If you want to abstract package installation, then you can use aliases to provide a common name to packages:</p>
+
+<pre><code># In the &#39;openssl&#39; class
+$ssl = $operatingsystem ? {
+    solaris =&gt; SMCossl,
+    default =&gt; openssl
+}
+
+# It is not an error to set an alias to the same value as the
+# object name.
+package { $ssl:
+    ensure =&gt; installed,
+    alias =&gt; openssl
+}
+
+. etc. .
+
+$ssh = $operatingsystem ? {
+    solaris =&gt; SMCossh,
+    default =&gt; openssh
+}
+
+# Use the alias to specify a dependency, rather than
+# having another selector to figure it out again.
+package { $ssh:
+    ensure =&gt; installed,
+    alias =&gt; openssh,
+    require =&gt; Package[openssl]
+}</code></pre>
+
+<h4 id='platform'>platform</h4>
+
+<p>A read-only parameter set by the package.</p>
+
+<h4 id='provider'>provider</h4>
+
+<p>The specific backend for provider to use. You will seldom need to specify this &#8211; Puppet will usually discover the appropriate provider for your platform. Available providers are:</p>
+
+<ul>
+<li>
+<p><strong>appdmg</strong>: Package management which copies application bundles to a target. Required binaries: <code>/usr/bin/hdiutil</code>, <code>/usr/bin/curl</code>, <code>/usr/bin/ditto</code>. Supported features: <code>installable</code>.</p>
+</li>
+
+<li>
+<dl>
+<dt><strong>apple</strong>: Package management based on OS X&#8217;s builtin packaging system. This is</dt>
+
+<dd>essentially the simplest and least functional package system in existence &#8211;it only supports installation; no deletion or upgrades. The provider will automatically add the <code>.pkg</code> extension, so leave that off when specifying the package name. Required binaries: <code>/usr/sbin/installer</code>. Supported features: <code>installable</code>.</dd>
+</dl>
+</li>
+
+<li>
+<p><strong>apt</strong>: Package management via <code>apt-get</code>. Required binaries: <code>/usr/bin/apt-cache</code>, <code>/usr/bin/debconf-set-selections</code>, <code>/usr/bin/apt-get</code>. Default for <code>operatingsystem</code> == <code>debianubuntu</code>. Supported features: <code>installable</code>, <code>purgeable</code>, <code>uninstallable</code>, <code>upgradeable</code>, <code>versionable</code>.</p>
+</li>
+
+<li>
+<p><strong>aptitude</strong>: Package management via <code>aptitude</code>. Required binaries: <code>/usr/bin/apt-cache</code>, <code>/usr/bin/aptitude</code>. Supported features: <code>installable</code>, <code>purgeable</code>, <code>uninstallable</code>, <code>upgradeable</code>, <code>versionable</code>.</p>
+</li>
+
+<li>
+<p><strong>aptrpm</strong>: Package management via <code>apt-get</code> ported to <code>rpm</code>. Required binaries: <code>apt-cache</code>, <code>rpm</code>, <code>apt-get</code>. Supported features: <code>installable</code>, <code>purgeable</code>, <code>uninstallable</code>, <code>upgradeable</code>, <code>versionable</code>.</p>
+</li>
+
+<li>
+<p><strong>blastwave</strong>: Package management using Blastwave.org&#8217;s <code>pkg-get</code> command on Solaris. Required binaries: <code>pkg-get</code>. Supported features: <code>installable</code>, <code>uninstallable</code>, <code>upgradeable</code>.</p>
+</li>
+
+<li>
+<p><strong>darwinport</strong>: Package management using DarwinPorts on OS X. Required binaries: <code>/opt/local/bin/port</code>. Supported features: <code>installable</code>, <code>uninstallable</code>, <code>upgradeable</code>.</p>
+</li>
+
+<li>
+<dl>
+<dt><strong>dpkg</strong>: Package management via <code>dpkg</code>. Because this only uses <code>dpkg</code></dt>
+
+<dd>and not <code>apt</code>, you must specify the source of any packages you want to manage. Required binaries: <code>/usr/bin/dpkg-deb</code>, <code>/usr/bin/dpkg-query</code>, <code>/usr/bin/dpkg</code>. Supported features: <code>installable</code>, <code>purgeable</code>, <code>uninstallable</code>, <code>upgradeable</code>.</dd>
+</dl>
+</li>
+
+<li>
+<p><strong>fink</strong>: Package management via <code>fink</code>. Required binaries: <code>/sw/bin/apt-cache</code>, <code>/sw/bin/fink</code>, <code>/sw/bin/dpkg-query</code>, <code>/sw/bin/apt-get</code>. Supported features: <code>installable</code>, <code>purgeable</code>, <code>uninstallable</code>, <code>upgradeable</code>, <code>versionable</code>.</p>
+</li>
+
+<li>
+<dl>
+<dt><strong>freebsd</strong>: The specific form of package management on FreeBSD. This is an</dt>
+
+<dd>extremely quirky packaging system, in that it freely mixes between ports and packages. Apparently all of the tools are written in Ruby, so there are plans to rewrite this support to directly use those libraries. Required binaries: <code>/usr/sbin/pkg_info</code>, <code>/usr/sbin/pkg_add</code>, <code>/usr/sbin/pkg_delete</code>. Supported features: <code>installable</code>, <code>uninstallable</code>.</dd>
+</dl>
+</li>
+
+<li>
+<dl>
+<dt><strong>gem</strong>: Ruby Gem support. If a URL is passed via <code>source</code>, then that URL is used as the</dt>
+
+<dd>remote gem repository; if a source is present but is not a valid URL, it will be interpreted as the path to a local gem file. If source is not present at all, the gem will be installed from the default gem repositories. Required binaries: <code>gem</code>. Supported features: <code>installable</code>, <code>uninstallable</code>, <code>upgradeable</code>, <code>versionable</code>.</dd>
+</dl>
+</li>
+
+<li>
+<p><strong>hpux</strong>: HP-UX&#8217;s packaging system. Required binaries: <code>/usr/sbin/swremove</code>, <code>/usr/sbin/swinstall</code>, <code>/usr/sbin/swlist</code>. Default for <code>operatingsystem</code> == <code>hp-ux</code>. Supported features: <code>installable</code>, <code>uninstallable</code>.</p>
+</li>
+
+<li>
+<p><strong>openbsd</strong>: OpenBSD&#8217;s form of <code>pkg_add</code> support. Required binaries: <code>pkg_info</code>, <code>pkg_add</code>, <code>pkg_delete</code>. Default for <code>operatingsystem</code> == <code>openbsd</code>. Supported features: <code>installable</code>, <code>uninstallable</code>.</p>
+</li>
+
+<li>
+<p><strong>pkgdmg</strong>: Package management based on Apple&#8217;s Installer.app and DiskUtility.app. This package works by checking the contents of a DMG image for Apple pkg or mpkg files. Any number of pkg or mpkg files may exist in the root directory of the DMG file system. Sub directories are not checked for packages. See `the wiki docs &lt;/trac/puppet/wiki/DmgPackages&gt;` for more detail. Required binaries: <code>/usr/sbin/installer</code>, <code>/usr/bin/hdiutil</code>, <code>/usr/bin/curl</code>. Default for <code>operatingsystem</code> == <code>darwin</code>. Supported features: <code>installable</code>.</p>
+</li>
+
+<li>
+<p><strong>portage</strong>: Provides packaging support for Gentoo&#8217;s portage system. Required binaries: <code>/usr/bin/update-eix</code>, <code>/usr/bin/emerge</code>, <code>/usr/bin/eix</code>. Default for <code>operatingsystem</code> == <code>gentoo</code>. Supported features: <code>installable</code>, <code>uninstallable</code>, <code>upgradeable</code>, <code>versionable</code>.</p>
+</li>
+
+<li>
+<p><strong>ports</strong>: Support for FreeBSD&#8217;s ports. Again, this still mixes packages and ports. Required binaries: <code>/usr/local/sbin/portversion</code>, <code>/usr/local/sbin/pkg_deinstall</code>, <code>/usr/sbin/pkg_info</code>, <code>/usr/local/sbin/portupgrade</code>. Default for <code>operatingsystem</code> == <code>freebsd</code>. Supported features: <code>installable</code>, <code>uninstallable</code>, <code>upgradeable</code>.</p>
+</li>
+
+<li>
+<dl>
+<dt><strong>rpm</strong>: RPM packaging support; should work anywhere with a working <code>rpm</code></dt>
+
+<dd>binary. Required binaries: <code>rpm</code>. Supported features: <code>installable</code>, <code>uninstallable</code>, <code>upgradeable</code>, <code>versionable</code>.</dd>
+</dl>
+</li>
+
+<li>
+<p><strong>rug</strong>: Support for suse <code>rug</code> package manager. Required binaries: <code>/usr/bin/rug</code>, <code>rpm</code>. Default for <code>operatingsystem</code> == <code>susesles</code>. Supported features: <code>installable</code>, <code>uninstallable</code>, <code>upgradeable</code>, <code>versionable</code>.</p>
+</li>
+
+<li>
+<dl>
+<dt><strong>sun</strong>: Sun&#8217;s packaging system. Requires that you specify the source for</dt>
+
+<dd>the packages you&#8217;re managing. Required binaries: <code>/usr/bin/pkginfo</code>, <code>/usr/sbin/pkgadd</code>, <code>/usr/sbin/pkgrm</code>. Default for <code>operatingsystem</code> == <code>solaris</code>. Supported features: <code>installable</code>, <code>uninstallable</code>, <code>upgradeable</code>.</dd>
+</dl>
+</li>
+
+<li>
+<dl>
+<dt><strong>sunfreeware</strong>: Package management using sunfreeware.com&#8217;s <code>pkg-get</code> command on Solaris.</dt>
+
+<dd>At this point, support is exactly the same as <code>blastwave</code> support and has not actually been tested. Required binaries: <code>pkg-get</code>. Supported features: <code>installable</code>, <code>uninstallable</code>, <code>upgradeable</code>.</dd>
+</dl>
+</li>
+
+<li>
+<dl>
+<dt><strong>up2date</strong>: Support for Red Hat&#8217;s proprietary <code>up2date</code> package update</dt>
+
+<dd>mechanism. Required binaries: <code>/usr/sbin/up2date-nox</code>. Default for <code>lsbdistrelease</code> == <code>2.134</code> and <code>operatingsystem</code> == <code>redhatoelovm</code>. Supported features: <code>installable</code>, <code>uninstallable</code>, <code>upgradeable</code>.</dd>
+</dl>
+</li>
+
+<li>
+<p><strong>urpmi</strong>: Support via <code>urpmi</code>. Required binaries: <code>rpm</code>, <code>urpmi</code>, <code>urpmq</code>. Default for <code>operatingsystem</code> == <code>mandrivamandrake</code>. Supported features: <code>installable</code>, <code>uninstallable</code>, <code>upgradeable</code>, <code>versionable</code>.</p>
+</li>
+
+<li>
+<p><strong>yum</strong>: Support via <code>yum</code>. Required binaries: <code>yum</code>, <code>rpm</code>, <code>python</code>. Default for <code>operatingsystem</code> == <code>fedoracentosredhat</code>. Supported features: <code>installable</code>, <code>purgeable</code>, <code>uninstallable</code>, <code>upgradeable</code>, <code>versionable</code>.</p>
+</li>
+</ul>
+
+<h4 id='responsefile'>responsefile</h4>
+
+<p>A file containing any necessary answers to questions asked by the package. This is currently used on Solaris and Debian. The value will be validated according to system rules, but it should generally be a fully qualified path.</p>
+
+<h4 id='root'>root</h4>
+
+<p>A read-only parameter set by the package.</p>
+
+<h4 id='source'>source</h4>
+
+<p>Where to find the actual package. This must be a local file (or on a network file system) or a URL that your specific packaging type understands; Puppet will not retrieve files for you.</p>
+
+<h4 id='status'>status</h4>
+
+<p>A read-only parameter set by the package.</p>
+
+<h4 id='type'>type</h4>
+
+<p>Deprecated form of <code>provider</code>.</p>
+
+<h4 id='vendor'>vendor</h4>
+
+<p>A read-only parameter set by the package.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="../../images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+</ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <p>* *</p>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

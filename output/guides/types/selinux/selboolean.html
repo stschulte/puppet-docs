@@ -1,0 +1,102 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="../../../files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../../files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="../../../files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="../../../files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="../../../files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="../../../index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="../../../index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="../../../introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="../../../installation.html">Installing Puppet</a></dd>
+              <dd><a href="../../../language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="../../../types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="../../../types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <p>selboolean</p>
+
+<p>Manages SELinux booleans on systems with SELinux support. The supported booleans are any of the ones found in /selinux/booleans/.</p>
+
+<h3 id='parameters'>Parameters</h3>
+
+<h4 id='name'>name</h4>
+
+<ul>
+<li><strong>namevar</strong></li>
+</ul>
+
+<p>The name of the SELinux boolean to be managed.</p>
+
+<h4 id='persistent'>persistent</h4>
+
+<p>If set true, SELinux booleans will be written to disk and persist accross reboots. The default is <code>false</code>. Valid values are <code>true</code>, <code>false</code>.</p>
+
+<h4 id='provider'>provider</h4>
+
+<p>The specific backend for provider to use. You will seldom need to specify this &#8211; Puppet will usually discover the appropriate provider for your platform. Available providers are:</p>
+
+<ul>
+<li><strong>getsetsebool</strong>: Manage SELinux booleans using the getsebool and setsebool binaries. Required binaries: <code>/usr/sbin/getsebool</code>, <code>/usr/sbin/setsebool</code>.</li>
+</ul>
+
+<h4 id='value'>value</h4>
+
+<p>Whether the the SELinux boolean should be enabled or disabled. Valid values are <code>on</code>, <code>off</code>.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="../../../images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+</ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <p>* *</p>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

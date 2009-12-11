@@ -1,0 +1,205 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="../../files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="../../files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="../../files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="../../index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="../../index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="../../introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="../../installation.html">Installing Puppet</a></dd>
+              <dd><a href="../../language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="../../types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="../../types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <h1 id='cron'>cron</h1>
+
+<p>Installs and manages cron jobs.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="../../images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#platforms">Platforms</a></li>
+<li><a href="#examples">Examples</a></li>
+<li>
+<a href="#parameters">Parameters</a><ul style="list-style: none;">
+<li><a href="#id45"><code>command</code></a></li>
+<li><a href="#id46"><code>ensure</code></a></li>
+<li><a href="#id47"><code>environment</code></a></li>
+<li><a href="#id48"><code>hour</code></a></li>
+<li><a href="#id49"><code>minute</code></a></li>
+<li><a href="#id50"><code>month</code></a></li>
+<li><a href="#id51"><code>monthday</code></a></li>
+<li><a href="#id52"><code>name</code></a></li>
+<li>
+<a href="#id53"><code>provider</code></a><ul style="list-style: none;"><li><a href="#id54"><code>crontab</code></a></li></ul>
+</li>
+<li><a href="#id55"><code>special</code></a></li>
+<li><a href="#id56"><code>target</code></a></li>
+<li><a href="#id57"><code>user</code></a></li>
+<li><a href="#id58"><code>weekday</code></a></li>
+</ul>
+</li></ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <h2 id='requirements'>Requirements</h2>
+
+<ul>
+<li>A <code>crontab</code> executable.</li>
+</ul>
+
+<h2 id='platforms'>Platforms</h2>
+
+<p>Supported on any platform with <code>crontab</code>.</p>
+
+<h2 id='examples'>Examples</h2>
+
+<pre><code>cron { logrotate:
+    command =&gt; &quot;/usr/sbin/logrotate&quot;,
+    user =&gt; root,
+    hour =&gt; 2,
+    minute =&gt; 0
+}</code></pre>
+
+<p>Note that all cron values can be specified as an array of values:</p>
+
+<pre><code>cron { logrotate:
+    command =&gt; &quot;/usr/sbin/logrotate&quot;,
+    user =&gt; root,
+    hour =&gt; [2, 4]
+}</code></pre>
+
+<p>Or using ranges, or the step syntax <code>*/2</code> (although there&#8217;s no guarantee that your <code>cron</code> daemon supports it):</p>
+
+<pre><code>cron { logrotate:
+    command =&gt; &quot;/usr/sbin/logrotate&quot;,
+    user =&gt; root,
+    hour =&gt; [&#39;2-4&#39;],
+    minute =&gt; &#39;*/10&#39;
+}</code></pre>
+
+<h2 id='parameters'>Parameters</h2>
+
+<p>All fields except the command and the user are optional, although specifying no periodic fields would result in the command being executed every minute. While the name of the cron job is not part of the actual job, it is used by Puppet to store and retrieve it.</p>
+
+<p>If you specify a cron job that matches an existing job in every way except name, then the jobs will be considered equivalent and the new name will be permanently associated with that job. Once this association is made and synced to disk, you can then manage the job normally (e.g., change the schedule of the job).</p>
+
+<h3 id='id59'><code>command</code></h3>
+
+<p>The command to execute in the cron job. The environment provided to the command varies by local system rules, and it is best to always provide a fully qualified command. The user&#8217;s profile is not sourced when the command is run, so if the user&#8217;s environment is desired it should be sourced manually.</p>
+
+<p>All cron parameters support <code>absent</code> as a value; this will remove any existing values for that field.</p>
+
+<h3 id='id60'><code>ensure</code></h3>
+
+<p>The basic property that the resource should be in. Valid values are <code>present</code>, <code>absent</code>.</p>
+
+<h3 id='id61'><code>environment</code></h3>
+
+<p>Any environment settings associated with this cron job. They will be stored between the header and the job in the crontab. There can be no guarantees that other, earlier settings will not also affect a given cron job.</p>
+
+<p>Also, Puppet cannot automatically determine whether an existing, unmanaged environment setting is associated with a given cron job. If you already have cron jobs with environment settings, then Puppet will keep those settings in the same place in the file, but will not associate them with a specific job.</p>
+
+<p>Settings should be specified exactly as they should appear in the crontab, e.g., <code>PATH=/bin:/usr/bin:/usr/sbin</code>.</p>
+
+<h3 id='id62'><code>hour</code></h3>
+
+<p>The hour at which to run the cron job. Optional; if specified, must be between <code>0</code> and <code>23</code>, inclusive.</p>
+
+<h3 id='id63'><code>minute</code></h3>
+
+<p>The minute at which to run the cron job. Optional; if specified, must be between <code>0</code> and <code>59</code>, inclusive.</p>
+
+<h3 id='id64'><code>month</code></h3>
+
+<p>The month of the year. Optional; if specified must be between <code>1</code> and <code>12</code> or the month name (e.g., <code>December</code>).</p>
+
+<h3 id='id65'><code>monthday</code></h3>
+
+<p>The day of the month on which to run the command. Optional; if specified, must be between <code>1</code> and <code>31</code>.</p>
+
+<h3 id='id66'><code>name</code></h3>
+
+<p>The symbolic name of the cron job. This name is used for human reference only and is generated automatically for cron jobs found on the system. This generally won&#8217;t matter, as Puppet will do its best to match existing cron jobs against specified jobs (and Puppet adds a comment to cron jobs it adds), but it is at least possible that converting from unmanaged jobs to managed jobs might require manual intervention.</p>
+<div class='info'><p>This is the <code>namevar</code> for this resource type.</p></div>
+<h3 id='id67'><code>provider</code></h3>
+
+<p>The specific backend for provider to use. You will seldom need to specify this &#8211; Puppet will usually discover the appropriate provider for your platform. Available providers are:</p>
+
+<h4 id='id68'><code>crontab</code></h4>
+
+<p>Required binaries:</p>
+
+<ul>
+<li><code>crontab</code></li>
+</ul>
+
+<h3 id='id69'><code>special</code></h3>
+
+<p>Special schedules.</p>
+<div class='note'><p>Only supported on FreeBSD.</p></div>
+<h3 id='id70'><code>target</code></h3>
+
+<p>Where the cron job should be stored. For crontab-style entries this is the same as the user and defaults that way. Other providers default accordingly.</p>
+
+<h3 id='id71'><code>user</code></h3>
+
+<p>The user to run the command as. This user must be allowed to run cron jobs, which is not currently checked by Puppet.</p>
+
+<p>The user defaults to whomever Puppet is running as.</p>
+
+<h3 id='id72'><code>weekday</code></h3>
+
+<p>The weekday on which to run the command. Optional; if specified, must be between <code>0</code> and <code>7</code>, inclusive, with <code>0</code> (or <code>7</code>) being Sunday, or must be the name of the day (e.g., <code>Tuesday</code>).</p>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

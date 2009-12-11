@@ -1,0 +1,920 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="installation.html">Installing Puppet</a></dd>
+              <dd><a href="language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <h1 id='language_tutorial'>Language Tutorial</h1>
+
+<p>The purpose of Puppet&#8217;s language is to make it easy to specify the resources you need to manage on the machines you&#8217;re managing. The language has been developed with a focus on making it easy to handle all kinds of heterogeneity, whether that means different resources for different hosts or different attributes for a similar list of resources.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+<li>
+<a href="#resources">Resources</a><ul style="list-style: none;">
+<li><a href="#metaparameters">Metaparameters</a></li>
+<li><a href="#resource_defaults">Resource Defaults</a></li>
+<li>
+<a href="#resource_collections">Resource Collections</a><ul style="list-style: none;">
+<li>
+<a href="#classes">Classes</a><ul style="list-style: none;"><li><a href="#qualification_of_nested_classes">Qualification Of Nested Classes</a></li></ul>
+</li>
+<li><a href="#definitions">Definitions</a></li>
+<li><a href="#classes_vs_definitions">Classes vs. Definitions</a></li>
+<li><a href="#modules">Modules</a></li>
+</ul>
+</li>
+<li>
+<a href="#nodes">Nodes</a><ul style="list-style: none;">
+<li><a href="#matching_nodes_with_regular_expressions">Matching Nodes with Regular Expressions</a></li>
+<li><a href="#node_inheritance">Node Inheritance</a></li>
+<li><a href="#external_nodes">External Nodes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#language_features">Language Features</a><ul style="list-style: none;">
+<li><a href="#quoting">Quoting</a></li>
+<li><a href="#capitalization">Capitalization</a></li>
+<li><a href="#documentation">Documentation</a></li>
+<li><a href="#arrays">Arrays</a></li>
+<li>
+<a href="#variables">Variables</a><ul style="list-style: none;">
+<li><a href="#variable_scope">Variable Scope</a></li>
+<li><a href="#qualified_variables">Qualified Variables</a></li>
+<li><a href="#facts_as_variables">Facts as Variables</a></li>
+<li><a href="#variable_expressions">Variable Expressions</a></li>
+<li><a href="#appending_to_variables">Appending to Variables</a></li>
+</ul>
+</li>
+<li>
+<a href="#conditionals">Conditionals</a><ul style="list-style: none;">
+<li><a href="#selectors">Selectors</a></li>
+<li><a href="#case_statement">Case Statement</a></li>
+<li><a href="#ifelse_statement">If/Else Statement</a></li>
+</ul>
+</li>
+<li><a href="#virtual_resources">Virtual Resources</a></li>
+<li><a href="#exported_resources">Exported Resources</a></li>
+<li><a href="#reserved_words__acceptable_characters">Reserved words &amp; Acceptable characters</a></li>
+<li><a href="#comments">Comments</a></li>
+</ul>
+</li>
+<li>
+<a href="#expressions">Expressions</a><ul style="list-style: none;">
+<li><a href="#operator_precedence">Operator precedence</a></li>
+<li>
+<a href="#expression_examples">Expression examples</a><ul style="list-style: none;">
+<li><a href="#comparison_expressions">Comparison expressions</a></li>
+<li><a href="#arithmetic_expressions">Arithmetic expressions</a></li>
+<li><a href="#boolean_expressions">Boolean expressions</a></li>
+<li><a href="#regex_expressions">Regex expressions</a></li>
+</ul>
+</li>
+<li><a href="#backus_naur_form">Backus Naur Form</a></li>
+</ul>
+</li>
+<li><a href="#functions">Functions</a></li>
+<li><a href="#importing_manifests">Importing Manifests</a></li>
+<li><a href="#compilation_errors">Compilation Errors</a></li></ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <h2 id='resources'>Resources</h2>
+
+<p>Resources are fundamentally built from a type, a title, and a list of attributes, with each resource type having a specific list of supported attributes. You can find all of the supported resource types, their valid attributes, and documentation for all of it in the <a href='/guides/types/'>Type Guides</a> and <a href='/references/'>References</a>. Here&#8217;s a simple example of a resource:</p>
+
+<pre><code>file { &quot;/etc/passwd&quot;:
+    owner =&gt; root,
+    group =&gt; root,
+    mode  =&gt; 644,
+}</code></pre>
+
+<p>Any machine on which this snippet is executed will use it to verify that the passwd file is configured as specified. The field before the colon is the resource&#8217;s <code>title</code>, which can be used to refer to the resource in other parts of the configuration.</p>
+
+<p>For simple resources that don&#8217;t vary much, a single name is sufficient. There are many resources, though, whose names vary from one system to another; e.g., in the case of files, a single file might have different paths on different machines. For these cases, Puppet allows you to specify a local name in addition to the title:</p>
+
+<pre><code>file { &quot;sshdconfig&quot;:
+    name =&gt; $operatingsystem ? {
+        solaris =&gt; &quot;/usr/local/etc/ssh/sshd_config&quot;,
+        default =&gt; &quot;/etc/ssh/sshd_config&quot;,
+    },
+    owner =&gt; root,
+    group =&gt; root,
+    mode  =&gt; 644,
+}</code></pre>
+
+<p>We&#8217;re using a symbolic title that&#8217;s meaningful to humans, along with literal names for different platforms that provide the right file path. We can now use this symbolic name to build relationships:</p>
+
+<pre><code>service { &quot;sshd&quot;:
+    subscribe =&gt; File[sshdconfig],
+}</code></pre>
+
+<p>This will cause the <code>sshd</code> service to get restarted when the <code>sshdconfig</code> file changes. You&#8217;ll notice that when we reference a resource we capitalise the name of the resource, for example <code>File[sshdconfig]</code>.</p>
+
+<p>From Puppet version 0.24.6 you can specify multiple relationships like so:</p>
+
+<pre><code>service { &quot;sshd&quot;:
+    require =&gt; File[&quot;sshdconfig&quot;, &quot;sshconfig&quot;, &quot;authorized_keys&quot;]</code></pre>
+
+<p>It&#8217;s important to note here that the language doesn&#8217;t actually know much about the resources it is managing; it knows the name and the type, and it has a list of parameters, but those parameters mean nothing in the language. If you provide a symbolic title to a given resource, you should always use that single title in the language, because otherwise the language will assume you are managing separate resources, which might result in an error on the client:</p>
+
+<pre><code>file { &quot;sshdconfig&quot;:
+    name  =&gt; &quot;/usr/local/etc/ssh/sshd_config&quot;,
+    owner =&gt; &quot;root&quot;,
+}
+
+file { &quot;/usr/local/etc/ssh/sshd_config&quot;:
+    owner =&gt; &quot;sshd&quot;,
+}</code></pre>
+
+<p>The Puppet parser does not know that these resource specifications will attempt to manage the same resource, because they have different titles. This will result in an error on the client when the second resource tries to instantiate and it is found to conflict with the first resource.</p>
+
+<h3 id='metaparameters'>Metaparameters</h3>
+
+<p>In addition to the attributes specific to each type Puppet also has global attributes called metaparameters. Metaparameters are parameters that work with any resource type; they are part of the Puppet framework itself rather than being part of the implementation of any given instance. Thus, any defined metaparameter can be used with any instance in your manifest, including defined components.</p>
+
+<p>In the examples in the section above we used two metaparameters, <code>subscribe</code> and <code>require</code>, both of which build relationships between resources. You can see a full list of metaparameters in the <a href='metaparameters.html'>Metaparameter Reference</a>.</p>
+
+<h3 id='resource_defaults'>Resource Defaults</h3>
+
+<p>Sometimes you need to specify a default parameter value for a set of resources; Puppet provides a syntax for doing this, using a capitalized resource specification that has no title:</p>
+
+<pre><code>Exec { path =&gt; &quot;/usr/bin:/bin:/usr/sbin:/sbin&quot; }
+exec { &quot;echo this works&quot;: }</code></pre>
+
+<p>The first statement in this snippet provides a default value for <code>exec</code> resources, which require either fully qualified paths or a path in which to look for the executable. Individual resources can still specify a unique value if they need to, but at least now you do not have to specify this value every time. This way you can specify a single default path for your entire configuration, and then override that value as necessary.</p>
+
+<p>Defaults can be used for any resource type.</p>
+
+<p>Note also that defaults are not global &#8211; they only affect the current scope and scopes below the current one. If you want a default setting to affect your entire configuration, your only choice currently is to specify them outside of any class.</p>
+
+<h3 id='resource_collections'>Resource Collections</h3>
+
+<p>There are two ways to combine multiple resources: Classes and definitions. Classes model fundamental aspects of nodes, so they are singletons &#8211; they only ever get evaluated once per node. Definitions, on the other hand, behave like custom types defined in the language and are meant to be evaluated multiple times, with different inputs each time.</p>
+
+<h4 id='classes'>Classes</h4>
+
+<p>Classes are introduced with the <code>class</code> keyword, and their contents are wrapped in curly braces:</p>
+
+<pre><code>class unix {
+    file {
+        &quot;/etc/passwd&quot;: 
+            owner =&gt; &quot;root&quot;, 
+            group =&gt; &quot;root&quot;, 
+            mode  =&gt; 644;
+        &quot;/etc/shadow&quot;: 
+            owner =&gt; &quot;root&quot;, 
+            group =&gt; &quot;root&quot;, 
+            mode  =&gt; 440;
+    }
+}</code></pre>
+
+<p>Classes also support a simple form of inheritance that allows subclasses to override resources defined in parent classes. Only one class can be inherited by a class:</p>
+
+<pre><code>class freebsd inherits unix {
+    File[&quot;/etc/passwd&quot;] { group =&gt; wheel }
+    File[&quot;/etc/shadow&quot;] { group =&gt; wheel }
+}</code></pre>
+
+<p>Conversely, you can use the <code>undef</code> keyword when overriding to make the child class act as if the value had never been set in the parent:</p>
+
+<pre><code>class freebsd inherits unix {
+    File[&quot;/etc/passwd&quot;] { group =&gt; undef }
+}</code></pre>
+
+<p>In this example, nodes which include the <code>unix</code> class will have the password file forced to group wheel, while nodes including <code>freebsd</code> would have the password file group ownership left unmodified.</p>
+
+<p>From Puppet version 0.24.6 you can specify multiple overrides like so:</p>
+
+<pre><code>class freebsd inherits unix {
+    File[&quot;/etc/passwd&quot;,&quot;/etc/shadow&quot;] { group =&gt; wheel }
+}</code></pre>
+
+<p>It is also possible (since version 0.23.1) to add values to resource parameters using the <code>+&gt;</code> (&#8216;plusignment&#8217;) operator:</p>
+
+<pre><code>class apache {
+    service { &quot;apache&quot;: require =&gt; Package[&quot;httpd&quot;] }
+}
+
+class apache-ssl inherits apache {
+    # host certificate is required for SSL to function
+    Service[apache] { require +&gt; File[&quot;apache.pem&quot;] }
+}</code></pre>
+
+<p>The above effectively makes the <code>require</code> parameter in the <code>apache-ssl</code> class equal to <code>[Package[&quot;httpd&quot;], File[&quot;apache.pem&quot;]]</code>.</p>
+
+<p>You can add multiple values by separating each value with commas:</p>
+
+<pre><code>class apache {
+    service { &quot;apache&quot;: require =&gt; Package[&quot;httpd&quot;] }
+}
+
+class apache-ssl inherits apache {
+    Service[apache] { require +&gt; [ File[&quot;apache.pem&quot;], File[&quot;/etc/httpd/conf/httpd.conf&quot;] ] }
+}</code></pre>
+
+<p>The above would make the <code>require</code> parameter in the <code>apache-ssl</code> class equal to <code>[Package[&quot;httpd&quot;], File[&quot;apache.pem&quot;], File[&quot;/etc/httpd/conf/httpd.conf&quot;]]</code>.</p>
+
+<p>Like resources, you can also create relationships with classes like so:</p>
+
+<pre><code>class apache {
+    service { &quot;apache&quot;: require =&gt; Class[&quot;squid&quot;] }
+}</code></pre>
+
+<p>The above uses the <code>require</code> metaparameter to make the <code>apache</code> class dependent on the <code>squid</code> class.</p>
+
+<p>From Puppet version 0.24.6 you can specify multiple relationships like so:</p>
+
+<pre><code>class apache {
+    service { &quot;apache&quot;:
+                  require =&gt; Class[&quot;squid&quot;, &quot;xml&quot;, &quot;jakarta&quot;]</code></pre>
+
+<p>Classes are evaluated using the <code>include</code> function. If a class is already evaluated, then <code>include</code> essentially does nothing.</p>
+
+<h5 id='qualification_of_nested_classes'>Qualification Of Nested Classes</h5>
+
+<p>Puppet supports qualification of classes defined inside a class. This allows you to use classes defined inside other classes, which is basically a way to achieve modularity.</p>
+
+<p>For example:</p>
+
+<pre><code>class myclass {
+class nested {
+    file { &quot;/etc/passwd&quot;: 
+    owner =&gt; &quot;root&quot;, 
+    group =&gt; &quot;root&quot;, 
+    mode  =&gt; 644;
+    }
+}
+}
+
+class anotherclass {
+include myclass::nested
+}</code></pre>
+
+<p>In this example, the <code>nested</code> class inside <code>myclass</code> is included as <code>myclass::nested</code> in <code>anotherclass</code>. Qualification is dependent on the evaluation order of your classes. Class <code>myclass</code> must be evaluated before class <code>anotherclass</code> for this example to work properly.</p>
+
+<h4 id='definitions'>Definitions</h4>
+
+<p>Definitions follow the same basic form as classes, but they are introduced with the <code>define</code> keyword and they support arguments but no inheritance:</p>
+
+<pre><code>define svn_repo($path) {
+    exec { &quot;/usr/bin/svnadmin create $path/$title&quot;:
+        unless =&gt; &quot;/bin/test -d $path&quot;,
+    }
+}
+
+svn_repo { puppet: path =&gt; &quot;/var/svn&quot; }</code></pre>
+
+<p>Note the use of <code>$title</code> here. Definitions can have both a name and a title (as of 0.22.3) represented by the <code>$title</code> and <code>$name</code> variables respectively. By default, <code>$title</code> and <code>$name</code> are set to the same value, but you can set a <code>title</code> attribute and pass a different name as a parameter. You can then use the two values differently within your definition. It is important to note that the <code>$title</code> and <code>$name</code> variables are only available for use within definitions. You can&#8217;t use them in classes or other stand-alone resources.</p>
+
+<p>Note that all defined types support automatically all metaparameters. Therefore you can pass any later used parameters like <code>$require</code> to a define, without any definition of it:</p>
+
+<pre><code>define svn_repo($path) {
+    exec {&quot;create_repo_${name}&quot;: 
+        command =&gt; &quot;/usr/bin/svnadmin create $path/$title&quot;,
+        unless =&gt; &quot;/bin/test -d $path&quot;,
+    }
+    if $require {
+        Exec[&quot;create_repo_${name}&quot;]{
+            require +&gt; $require,
+        }
+    }
+}
+
+svn_repo { puppet: 
+   path =&gt; &quot;/var/svn&quot;,
+   require =&gt; Package[subversion],
+}</code></pre>
+
+<h4 id='classes_vs_definitions'>Classes vs. Definitions</h4>
+
+<p>Classes and definitions are defined similarly (although classes do not accept parameters), but they are used very differently. Definitions are used to define reusable objects which will have multiple instances on a given host, so they cannot include any resources that will only have one instance, such as a package or a root-level service. Classes, on the other hand, are guaranteed to be singletons &#8211; you can include them as many times as you want and you&#8217;ll only ever get one copy of the resources &#8211; so they are exactly meant to include these singleton objects.</p>
+
+<p>Most often, services will be defined in a class, where the service&#8217;s package, configuration files, and running service will all be defined in the class, because there will normally be one copy of each on a given host. Definitions would be used to manage resources like virtual hosts, of which you can have many, or to encode some simple information in a reusable wrapper to save typing.</p>
+
+<h4 id='modules'>Modules</h4>
+
+<p>You can combine collections of classes, definitions and resources into modules. Modules are portable collections of configuration, for example a module might contain all the resources required to configure Postfix or Apache. You can find out about modules and their structure on the Module Organisation, and find modules that might find useful in your own configurations at the Puppet Modules page.</p>
+<div class='warning'><p>Missing references to pages</p></div>
+<h3 id='nodes'>Nodes</h3>
+
+<p>Node definitions look just like classes, including supporting inheritance, but they are special in that when a node connects to the Puppet master daemon, its name will be looked for in the list of defined nodes and the found specification will be evaluated for that node.</p>
+
+<p>Node names can be the short host name, or the fully qualified domain name, although some names, especially fully qualified ones, need to be quoted. See <a href='#quoting'>below</a> for the quoting rules:</p>
+
+<pre><code>node &quot;www.testing.com&quot; {
+   include common 
+   include apache, squid
+}</code></pre>
+
+<p>The previous node definition creates a node called <code>www.testing.com</code> and includes the <code>common</code>, <code>apache</code> and <code>squid</code> classes. You can also specify multiple identical nodes by separating each with a comma:</p>
+
+<pre><code>node &quot;www.testing.com&quot;, &quot;www2.testing.com&quot;, &quot;www3.testing.com&quot; {
+   include common 
+   include apache, squid
+}</code></pre>
+
+<p>The previous examples creates three identical nodes: <code>www.testing.com</code>, <code>www2.testing.com</code>, and <code>www3.testing.com</code>.</p>
+
+<h4 id='matching_nodes_with_regular_expressions'>Matching Nodes with Regular Expressions</h4>
+
+<p>From version 0.25.0, regular expression matching is now possible in node definitions:</p>
+
+<pre><code>node /^www\d+$/ {
+    include common
+}</code></pre>
+
+<p>This would match any host called <code>www</code> and ending with one or more digits, for example <code>www1</code>, <code>www2</code>, etc:</p>
+
+<pre><code>node /^(foo|bar)\.testing\.com$/ {
+    include common
+}</code></pre>
+
+<p>This would match either host <code>foo</code> or <code>bar</code> in the testing.com domain.</p>
+
+<p>There are some simple rules for node regular expressions.</p>
+
+<ul>
+<li>If there is a node without a regular expression that matches the current client connecting then use it</li>
+
+<li>If no nodes without regular expressions match, then process any nodes with regular expressions and stop at hte first match.</li>
+</ul>
+
+<h4 id='node_inheritance'>Node Inheritance</h4>
+
+<p>Nodes support a limited inheritance model and like classes nodes can only inherit from one other node:</p>
+
+<pre><code>node &quot;www2.testing.com&quot; inherits &quot;www.testing.com&quot; {
+    include loadbalancer
+}</code></pre>
+
+<p>In this node definition the <code>www2.testing.com</code> inherits any configuration specified for the <code>www.testing.com</code> node in addition to including the <code>loadbalancer</code> class.</p>
+
+<p>You can also specify a node named <code>default</code>, which will be used if no directly matching node is found.</p>
+
+<h4 id='external_nodes'>External Nodes</h4>
+
+<p>As an alternative to nodes defined on your manifests you can also make use of node definitions from external sources including files, databases and LDAP servers. There is documentation for ExternalNodes and LDAPNodes..</p>
+<div class='warning'><p>Missing references to pages</p></div>
+<h2 id='language_features'>Language Features</h2>
+
+<p>In order to specify resources correctly, you need language features beyond specification and grouping, so Puppet&#8217;s language provides common functionality in this area. The language is still a simple language, and it makes no attempt to be Turing-complete or any such thing, but it is usually sufficient to get the job done.</p>
+
+<h3 id='quoting'>Quoting</h3>
+
+<p>You probably noticed above that most strings are not quoted. Most Puppet configurations consist of parameter values, so it makes sense to skip quotes for simple strings. Any alphanumeric string starting with a letter, plus the <code>-</code> character, can leave out quotes. However, <a href='http://www.reductivelabs.com/trac/puppet/wiki/PuppetBestPractice'>Puppet Best Practice</a> dictates the use of quoted values for any non-native value (see <a href='http://www.reductivelabs.com/trac/puppet/wiki/PuppetBestPractice#syntax-and-formatting'>Best Practice::Syntax and Formatting</a>).</p>
+
+<p>Single-quoted strings will not do any variable interpolation, double-quoted strings will. Variables in strings can be bracketed with <code>{}</code> for further clarification:</p>
+
+<pre><code>$value = &quot;${one}${two}&quot;</code></pre>
+
+<p>To put a quote character or <code>$</code> in a quoted string where it would normally have a special meaning, precede it with <code>\</code>. For an actual <code>\</code>, use <code>\\</code>.</p>
+
+<h3 id='capitalization'>Capitalization</h3>
+
+<p>Like much of Puppet&#8217;s language, capitalization is influenced by Ruby. In general you would use capitalisation in the following contexts:</p>
+
+<ul>
+<li>
+<p>Referencing: when you want to reference a resource, usually from another resource such as a <code>require</code> metaparameter, you have to capitalize the name of the resource, for example, <code>require =&gt; File[sshdconfig]</code>.</p>
+</li>
+
+<li>
+<p>Setting default attribute values: Resource Defaults.</p>
+</li>
+
+<li>
+<p>Inheritance: allows subclasses to override resources defined in parent classes (needs referencing)</p>
+</li>
+</ul>
+<div class='warning'><p>Missing references to pages</p></div>
+<h3 id='documentation'>Documentation</h3>
+
+<p>From Puppet version 0.24.7 you can generate automated documentation from resources, classes and modules using the <code>puppetdoc</code> tool. You can find more detail at the <a href='http://www.reductivelabs.com/trac/puppet/wiki/PuppetManifestDocumentation'>Puppet Manifest Documentation</a> page.</p>
+
+<h3 id='arrays'>Arrays</h3>
+
+<p>Arrays are defined in puppet using the following construct:</p>
+
+<pre><code>[ &quot;one&quot;, &quot;two&quot;, &quot;three&quot; ]</code></pre>
+
+<p>Some type members, such as &#8216;alias&#8217; in the <a href='http://www.reductivelabs.com/trac/puppet/wiki/TypeReference#host'>host</a> definition accept arrays as their value. A host resource with multiple aliases would look like this:</p>
+
+<pre><code>host { &quot;one.example.com&quot;:
+    alias  =&gt; [ &quot;satu&quot;, &quot;dua&quot;, &quot;tiga&quot; ],
+    ip     =&gt; &quot;192.168.100.1&quot;,
+    ensure =&gt; present,
+}</code></pre>
+
+<p>This would add a host &#8216;one.example.com&#8217; to the hosts list with the three aliases &#8216;satu&#8217;, &#8216;dua&#8217;, and &#8216;tiga&#8217;.</p>
+
+<p>Or, for example, if you want a resource to require multiple other resources, the way to do this would be like this:</p>
+
+<pre><code>resource { &quot;baz&quot;:
+    require  =&gt; [ Package[&quot;foo&quot;], File[&quot;bar&quot;] ],
+}</code></pre>
+
+<p>Another example for array usage is to call a custom defined resource multiple times, like this:</p>
+
+<pre><code>define php::pear() {
+    package { &quot;php-${name}&quot;: ensure =&gt; installed }
+}
+
+php::pear { [&quot;ldap&quot;, &quot;mysql&quot;, &quot;ps&quot;, &quot;snmp&quot;, &quot;sqlite&quot;, &quot;tidy&quot;, &quot;xmlrpc&quot;]: }</code></pre>
+
+<p>Of course, this can be used for native types as well:</p>
+
+<pre><code>file { [ &quot;foo&quot;, &quot;bar&quot;, &quot;foobar&quot; ]:
+    owner =&gt; root,
+    group =&gt; root,
+    mode  =&gt; 600,
+}</code></pre>
+
+<h3 id='variables'>Variables</h3>
+
+<p>Puppet supports variables like most other languages. Because we wanted to skip quoting most strings, Puppet variables are denoted with <code>$</code>:</p>
+
+<pre><code>$content = &quot;some content\n&quot;
+
+file { &quot;/tmp/testing&quot;: content =&gt; $content }</code></pre>
+
+<p>Puppet has a declarative language, which means that its scoping and assignment rules are somewhat different than a normal imperative language. The primary difference is that you cannot change the value of a variable within a single scope, because that would rely on file order to determine the value of the variable. This will result in an error:</p>
+
+<pre><code>$user = root
+file { &quot;/etc/passwd&quot;:
+    owner =&gt; $user,
+}
+$user = bin
+file { &quot;/bin&quot;:
+    owner   =&gt; $user,
+    recurse =&gt; true,
+}</code></pre>
+
+<p>You will almost always find that you can avoid resetting variable values using the built in conditionals:</p>
+
+<pre><code>$group = $operatingsystem ? {
+    solaris =&gt; &quot;sysadmin&quot;,
+    default =&gt; &quot;wheel&quot;,
+}</code></pre>
+
+<p>Thus, within a single evaluation of the manifest, a variable may only be assigned once. This does not precludes setting a variable in non-overlapping scopes. For example, to set top-level configuration values:</p>
+
+<pre><code>node a {
+    $setting = &quot;this&quot;
+    include class_using_setting
+}
+node b {
+    $setting = &quot;that&quot;
+    include class_using_setting
+}</code></pre>
+
+<h4 id='variable_scope'>Variable Scope</h4>
+
+<p>Classes, components, and nodes introduce a new scope. Puppet is currently dynamically scoped, which means that scope hierarchies are created based on where the code is evaluated instead of where the code is defined.</p>
+
+<p>For example:</p>
+
+<pre><code>$test = &quot;top&quot;
+class myclass {
+    exec { &quot;/bin/echo $test&quot;: logoutput =&gt; true }
+}
+
+class other {
+    $test = &quot;other&quot;
+    include myclass
+}
+
+include other</code></pre>
+
+<p>In this case, there&#8217;s a top-level scope, a new scope for <code>other</code>, and the a scope below that for <code>myclass</code>. When this code is evaluated, <code>$test</code> evaluates to <code>other</code>, not <code>top</code>.</p>
+
+<p>Variable scope can be confusing and you should read about some <a href='http://reductivelabs.com/trac/puppet/wiki/FrequentlyAskedQuestions#common-misconceptions'>common misconceptions</a> with regard to scoping.</p>
+
+<h4 id='qualified_variables'>Qualified Variables</h4>
+
+<p>Puppet supports qualification of variables inside a class. This allows you to use variables defined in other classes.</p>
+
+<p>For example:</p>
+
+<pre><code>class myclass {
+    $test = &quot;content&quot;
+}
+
+class anotherclass {
+    $other = $myclass::test
+}</code></pre>
+
+<p>In this example, the value of the <code>$other</code> variable evaluates to <code>content</code>. Qualified variables are read-only however and you can not set a variable&#8217;s value from other class.</p>
+
+<p>Variable qualification is dependent on the evaluation order of your classes. Class <code>myclass</code> must be evaluated before class <code>anotherclass</code> for variables to be set correctly.</p>
+
+<h4 id='facts_as_variables'>Facts as Variables</h4>
+
+<p>In addition to user-defined variables, the facts generated by Facter are also available as variables. To use a fact as a variable prefix the name of the fact with <code>$</code>. For example, the value of the <code>operatingsystem</code> and <code>puppetversion</code> facts would be available as the variables <code>$operatingsystem</code> and <code>$puppetversion</code>.</p>
+
+<h4 id='variable_expressions'>Variable Expressions</h4>
+
+<p>Starting with version 0.24.6, it is now possible to assign arbitrary expressions to variables, for example:</p>
+
+<pre><code>$inch_to_cm = 2.54
+$rack_length_cm = 19 * $inch_to_cm
+$gigabyte = 1024 * 1024 * 1024
+$can_update = ($ram_gb * $gigabyte) &gt; 1 &lt;&lt; 24</code></pre>
+
+<p>See the Expression section later on this page for further details of the expressions that are now available.</p>
+
+<h4 id='appending_to_variables'>Appending to Variables</h4>
+
+<p>Starting with version 0.24.6, the ability to append to variables is also available:</p>
+
+<pre><code>$ssh_users = [ &#39;myself&#39;, &#39;someone&#39; ]
+
+class test {
+   $ssh_users += [&#39;someone_else&#39;]
+}</code></pre>
+
+<p>Here the <code>$ssh_users</code> variable contains an array with the elements <code>myself</code> and <code>someone</code>. Using the variable append syntax, <code>+=</code>, we added another element, <code>someone_else</code> to the array.</p>
+
+<h3 id='conditionals'>Conditionals</h3>
+
+<p>Puppet currently supports two types of conditionals:</p>
+
+<ul>
+<li>The <em>selector</em> which can only be used within resources to pick the correct value for an attribute, and</li>
+
+<li><em>statement conditionals</em> which can be used more widely in your manifests to include additional classes, define distinct sets of resources within a class, or make other structural decisions.</li>
+</ul>
+
+<h4 id='selectors'>Selectors</h4>
+
+<p>The selector syntax works like a multi-valued trinary operator, similar to C&#8217;s <code>foo = bar ? 1 : 0</code> operator where <code>foo</code> will be set to <code>1</code> if <code>bar</code> evaluates to true and <code>0</code> if <code>bar</code> is false. Selectors are useful to specify a resource attribute or assign a variable based on a fact or another variable. In addition to any number of specified values, selectors also allow you to specify a default if no value matches.</p>
+
+<p>Let&#8217;s look at a simple example of a selector at work:</p>
+
+<pre><code>file { &quot;/etc/config&quot;:
+    owner =&gt; $operatingsystem ? {
+        &quot;sunos&quot;   =&gt; &quot;adm&quot;,
+        &quot;redhat&quot;  =&gt; &quot;bin&quot;,
+        default =&gt; undef,
+    },
+}</code></pre>
+
+<p>If the <code>$operatingsystem</code> fact returns <code>sunos</code> or <code>redhat</code> then the ownership of the file is set to <code>adm</code> or <code>bin</code> respectively. Any other result and the <code>owner</code> attribute will not be set, <code>undef</code>. Remember to quote the comparators you&#8217;re using in the selector as the lack of quotes can toss syntax errors (see <span>wiki:FrequentlyAskedQuestions#id20 this FAQ entry</span> for an example).</p>
+
+<p>Selectors can also be used to assign variables:</p>
+
+<pre><code>$owner = $operatingsystem ? {
+    sunos   =&gt; &quot;adm&quot;,
+    redhat  =&gt; &quot;bin&quot;,
+    default =&gt; undef,
+}</code></pre>
+
+<p>Starting with version 0.25, selectors now support regular expressions:</p>
+
+<pre><code>$owner = $operatingsystem ? {
+    /(redhat|debian)/   =&gt; &quot;bin&quot;,
+    default =&gt; undef,
+}</code></pre>
+
+<p>In this last example, if <code>$operatingsystem</code> matches either redhat or debian, then <code>bin</code> will be the selected result.</p>
+
+<p>Captures in selector regular expressions automatically creates some limited scope variables (<code>$0</code> to <code>$n</code>):</p>
+
+<pre><code>$system = $operatingsystem ? {
+    /(redhat|debian)/   =&gt; &quot;our system is $1&quot;,
+    default =&gt; &quot;our system is unknown&quot;,
+}</code></pre>
+
+<p>In this last example, <code>$1</code> will get replaced by the content of the capture (here either <code>redhat</code> or <code>debian</code>).</p>
+
+<p>The variable <code>$0</code> will contain the whole match.</p>
+
+<h4 id='case_statement'>Case Statement</h4>
+
+<p><code>Case</code> is the first of puppet&#8217;s two conditional statements, which can be wrapped around any Puppet code to add decision-making logic to your manifests. A common use for the <code>case</code> statement is to apply different classes to a particular node based on its operating system:</p>
+
+<pre><code>case $operatingsystem {
+    sunos:   { include solaris } # apply the solaris class
+    redhat:  { include redhat  } # apply the redhat class
+    default: { include generic } # apply the generic class
+}</code></pre>
+
+<p>Case statements can also specify multiple conditions, separating each with a comma:</p>
+
+<pre><code>case $hostname {
+    jack,jill:      { include hill    } # apply the hill class
+    humpty,dumpty:  { include wall    } # apply the wall class
+    default:        { include generic } # apply the generic class
+}</code></pre>
+
+<p>Here, if the <code>$hostname</code> fact returns either <code>jack</code> or <code>jill</code> the <code>hill</code> class would be included.</p>
+
+<p>Starting with version 0.25, the <code>case</code> statement also supports regular expression options:</p>
+
+<pre><code>case $hostname {
+    /^j(ack|ill)$/:   { include hill    } # apply the hill class
+    /^[hd]umpty$/:    { include wall    } # apply the wall class
+    default:          { include generic } # apply the generic class
+}</code></pre>
+
+<p>In this last example, if <code>$hostname</code> matches either <code>jack</code> or <code>jill</code>, then the <code>hill</code> class will be included. But if <code>$hostname</code> matches either <code>humpty</code> or <code>dumpty</code>, then the <code>wall</code> class will be included.</p>
+
+<p>As with selectors, regular expressions captures are available and these creates limited scope variables <code>$0</code> to <code>$n</code>:</p>
+
+<pre><code>case $hostname {
+    /^j(ack|ill)$/:   { notice(&quot;Welcome $1!&quot;) } 
+    default:          { notice(&quot;Welcome stranger&quot;) }
+}</code></pre>
+
+<p>In this last example, if <code>$host</code> is <code>jack</code> or <code>jill</code> then a notice message will be printed with <code>$1</code> replaced by either <code>ack</code> or <code>ill</code>.</p>
+
+<h4 id='ifelse_statement'>If/Else Statement</h4>
+
+<p>Puppet&#8217;s second conditional statement, <code>if/else</code> provides branching options based on the value of some expression. In releases prior to 0.24.6 the <code>if</code> statement only provides a simple if/else structure based on the existence of a variable:</p>
+
+<pre><code>if $variable {
+    file { &quot;/some/file&quot;: ensure =&gt; present }
+} else {
+    file { &quot;/some/other/file&quot;: ensure =&gt; present }
+}</code></pre>
+
+<p>Starting with version 0.24.6, the <code>if</code> statement can now branch based on a variable&#8217;s value:</p>
+
+<pre><code>if $server == &quot;mongrel&quot; {
+    include mongrel
+} else {
+    include nginx
+}</code></pre>
+
+<p>Here is the variable <code>$server</code> is equal to <code>mongrel</code> then include the class <code>mongrel</code> otherwise include the class <code>nginx</code>.</p>
+
+<p>Also possible are arithmetic expressions, for example:</p>
+
+<pre><code>if $ram &gt; 1024 {
+    $maxclient = 500
+}</code></pre>
+
+<p>In the previous example if the value of the variable <code>$ram</code> is greater than <code>1024</code> then set the value of the <code>$maxclient</code> variable to <code>500</code>.</p>
+
+<p>More complex expressions combining arithmetric expressions with the Boolean operators <code>and</code>, <code>or</code>, or <code>not</code> are also possible, for example:</p>
+
+<pre><code>if ( $processor_count &gt; 2 ) and (( $ram &gt;= 16 * $gigabyte ) or ( $disksize &gt; 1000 )) {
+include for_big_irons
+} else {
+include for_small_box
+}</code></pre>
+
+<p>See the Expression section later on this page for further details of the expressions that are now available.</p>
+
+<h3 id='virtual_resources'>Virtual Resources</h3>
+
+<p>As of 0.20.0, resources can be specified as virtual, meaning they will not be sent to the client unless <code>realized</code>. This features adds new syntax to the language. A simple example follows:</p>
+
+<pre><code>@user { luke: ensure =&gt; present }</code></pre>
+
+<p>The user luke is now defined virtually. To realize that definition, you can use a <code>collection</code>:</p>
+
+<pre><code>User &lt;| title == luke |&gt;</code></pre>
+
+<p>Or the <code>realize</code> function:</p>
+
+<pre><code>realize User[luke]</code></pre>
+
+<p>The motivation for this feature is somewhat complicated; please see the virtual resources page for more information.</p>
+<div class='warning'><p>Missing references to pages</p></div>
+<h3 id='exported_resources'>Exported Resources</h3>
+
+<p>Exported resources are an extension of virtual resources used to allow different hosts managed by Puppet to influence each other&#8217;s Puppet configuration. As with virtual resources, new syntax was added to the language for this purpose.</p>
+
+<p>The key syntactical difference between virtual and exported resources is that the special sigils (@ and &lt;| |&gt;) are doubled (@@ and &#171;| |&#187;) when referring to an exported resource.</p>
+
+<p>Here is an example with exported resources:</p>
+
+<pre><code>class ssh {
+@@sshkey { $hostname: type =&gt; dsa, key =&gt; $sshdsakey }
+    Sshkey &lt;&lt;| |&gt;&gt;
+}</code></pre>
+
+<p>To actually work, the <code>storeconfig</code> parameter must be set to <code>true</code>.</p>
+
+<p>The details of this feature are somewhat complicated; see the exported resources page for more information.</p>
+<div class='warning'><p>Missing references to pages</p></div>
+<h3 id='reserved_words__acceptable_characters'>Reserved words &amp; Acceptable characters</h3>
+
+<p>Generally, any word that the syntax uses for special meaning is probably also a reserved word, meaning you cannot use it for variable or type names. Thus, words like <code>true</code>, <code>define</code>, <code>inherits</code>, and <code>class</code> are all reserved. If you need to use a reserved word as a value, just quote it.</p>
+
+<p>You can use Aa-Zz, 0-9 and underscores in variables, resources and class names. It is important to note that in Puppet releases prior to 0.24.6 you cannot start a class name with a number.</p>
+
+<h3 id='comments'>Comments</h3>
+
+<p>Puppet supports two types of comments:</p>
+
+<ul>
+<li>sh-style comments; they can either be on their own line or at the end of a line (see the Conditionals example above).</li>
+
+<li>multi-line comments (available from 0.24.7 onwards)</li>
+</ul>
+
+<p>You can see an example of a multi-line comment:</p>
+
+<pre><code>/*
+this is a comment
+*/</code></pre>
+
+<h2 id='expressions'>Expressions</h2>
+
+<p>Starting with version 0.24.6 the Puppet language supports arbitrary expressions in <code>if</code> statement Boolean tests and in the right hand value of variable assignments.</p>
+
+<p>Puppet expressions can be composed of:</p>
+
+<ul>
+<li>boolean expressions, which are combination of other expressions combined by boolean operators (<code>and</code>, <code>or</code> and <code>not</code>)</li>
+
+<li>comparison expression, which consist of variable, numerical operands or other expressions combined with comparison operators ( <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>)</li>
+
+<li>arithmetic expressions, which consists of variable, numerical operands or other expressions combined with the following arithmetic operators: <code>+</code>, <code>-</code>, <code>/</code>, <code>*</code>, <code>&lt;&lt;</code>, <code>&gt;&gt;</code></li>
+
+<li>and starting with 0.25, regexes matches with the help of the regex match operator: <code>=~</code> and <code>!~</code></li>
+</ul>
+
+<p>Expressions can be enclosed in parenthesis, <code>()</code>, to group expressions and resolve operator ambiguity.</p>
+
+<h3 id='operator_precedence'>Operator precedence</h3>
+
+<p>The Puppet operator precedence conforms to the standard precedence, i.e. from the highest precedence to the lowest, hence:</p>
+
+<pre><code>! -&gt; not
+* / -&gt; times and divide
+- + -&gt; minus, plus
+&lt;&lt; &gt;&gt; -&gt; left shift and right shift
+== != -&gt; not equal, equal
+&gt;= &lt;= &gt; &lt; -&gt; greater equal, less or equal, greater than, less than
+and
+or</code></pre>
+
+<h3 id='expression_examples'>Expression examples</h3>
+
+<h4 id='comparison_expressions'>Comparison expressions</h4>
+
+<p>Comparison expressions include tests for equality using the <code>==</code> expression:</p>
+
+<pre><code>if $variable == &quot;foo&quot; {
+    include bar
+} else {
+    include foobar
+}</code></pre>
+
+<p>Here if <code>$variable</code> has a value of <code>foo</code> then include the <code>bar</code> class otherwise include the <code>foobar</code> class.</p>
+
+<p>Another example shows the use of the <code>!=</code> or not equal comparison operator:</p>
+
+<pre><code>if $variable != &quot;foo&quot; {
+    $othervariable = &quot;bar&quot;
+} else {
+    $othervariable = &quot;foobar&quot;
+}</code></pre>
+
+<p>In our second example if <code>$variable</code> has a value of <code>foo</code> then set the value the <code>$othervariable</code> variable to <code>bar</code> otherwise set the <code>$othervariable</code> variable to a value of <code>foobar</code>.</p>
+
+<h4 id='arithmetic_expressions'>Arithmetic expressions</h4>
+
+<p>You can also perform a variety of arithmetic expressions, for example:</p>
+
+<pre><code>$one = 1
+$one_thirty = 1.30
+$two = 2.034e-2
+    
+$result = ((( $two + 2) / $one_thirty) + 4 * 5.45) - (6 &lt;&lt; ($two + 4)) + (0x800 + -9)</code></pre>
+
+<h4 id='boolean_expressions'>Boolean expressions</h4>
+
+<p>Also possible are Boolean expressions using <code>or</code>, <code>and</code> and <code>not</code>, for example:</p>
+
+<pre><code>$one = 1
+$two = 2
+$var = ( $one &lt; $two ) and ( $one + 1 == $two )</code></pre>
+
+<h4 id='regex_expressions'>Regex expressions</h4>
+
+<p>Starting with 0.25, Puppet supports regex matching expressions using <code>=~</code> (match) and <code>!~</code> (not-match) for example:</p>
+
+<pre><code>if $host =~ /^www(\d+)\./ {
+    notice(&quot;Welcome web server #$1&quot;)
+}</code></pre>
+
+<p>Like case and selectors, the regex match operators create limited scope variables for each regex capture. In the previous example, <code>$1</code> will be replaced by the number following <code>www</code> in <code>$host</code>. Those variables are valid only for the statements in the if clause.</p>
+
+<h3 id='backus_naur_form'>Backus Naur Form</h3>
+
+<p>The available operators in Backus Naur Form:</p>
+
+<pre><code>&lt;exp&gt; ::=  &lt;exp&gt; &lt;arithop&gt; &lt;exp&gt;
+         | &lt;exp&gt; &lt;boolop&gt; &lt;exp&gt;
+         | &lt;exp&gt; &lt;compop&gt; &lt;exp&gt;
+         | &lt;exp&gt; &lt;matchop&gt; &lt;regex&gt;
+         | ! &lt;exp&gt;
+         | - &lt;exp&gt;
+         | &quot;(&quot; &lt;exp&gt; &quot;)&quot;
+         | &lt;rightvalue&gt;
+
+&lt;arithop&gt; ::= &quot;+&quot; | &quot;-&quot; | &quot;/&quot; | &quot;*&quot; | &quot;&lt;&lt;&quot; | &quot;&gt;&gt;&quot;
+&lt;boolop&gt;  ::= &quot;and&quot; | &quot;or&quot;  
+&lt;compop&gt;  ::= &quot;==&quot; | &quot;!=&quot; | &quot;&gt;&quot; | &quot;&gt;=&quot; | &quot;&lt;=&quot; | &quot;&lt;&quot;
+&lt;matchop&gt;  ::= &quot;=~&quot; | &quot;!~&quot;
+
+&lt;rightvalue&gt; ::= &lt;variable&gt; | &lt;function-call&gt; | &lt;literals&gt;
+&lt;literals&gt; ::= &lt;float&gt; | &lt;integer&gt; | &lt;hex-integer&gt; | &lt;octal-integer&gt; | &lt;quoted-string&gt;
+&lt;regex&gt; ::= &quot;/regex/&quot;</code></pre>
+
+<h2 id='functions'>Functions</h2>
+
+<p>Puppet supports many built in functions; see the function reference for details and see WritingYourOwnFunctions for information on how to create your own custom functions.</p>
+<div class='warning'><p>Missing references to pages</p></div>
+<p>Some functions can be used as a statement:</p>
+
+<pre><code>notice(&quot;Something weird is going on&quot;)</code></pre>
+
+<p>Or without parentheses:</p>
+
+<pre><code>notice &quot;Something weird is going on&quot;</code></pre>
+
+<p>Some functions instead return a value:</p>
+
+<pre><code>file { &quot;/my/file&quot;: content =&gt; template(&quot;mytemplate.erb&quot;) }</code></pre>
+<div class='note'><p>All functions run on the puppetmaster, so you only have access to the filesystem and resources on that host in your functions. The only exception to this is that any Facter facts that have been sent to the master from your clients are also at your disposal.</p></div>
+<h2 id='importing_manifests'>Importing Manifests</h2>
+
+<p>Puppet has an <code>import</code> keyword for importing other manifests. Code in those external manifests should always be stored in a <code>class</code> or <code>definition</code> or it will be imported into the main scope and applied to all nodes. Currently files are only searched for within the same directory as the file doing the importing.</p>
+
+<p>Files can also be imported using globbing, as implemented by Ruby&#8217;s <code>Dir.glob</code> method:</p>
+
+<pre><code>import &quot;classes/*.pp&quot;
+import &quot;packages/[a-z]*.pp&quot;</code></pre>
+
+<p>Manifests should normally be organized into modules.</p>
+<div class='warning'><p>Missing references to pages</p></div>
+<h2 id='compilation_errors'>Compilation Errors</h2>
+
+<p>By default, the server configuration variable <code>usecacheonfailure</code> is set to <code>true</code>. This means that when a manifest fails to compile, the old manifest is used instead. This may result in surprising behaviour if you are editing complex configurations. Running puppetd with <code>--no-usecacheonfailure</code> or with <code>--test</code>, or setting <code>usecacheonfailure = false</code> in the configuration file, will disable this behaviour.</p>
+<div class='warning'><p>Missing references to pages</p></div>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

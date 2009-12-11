@@ -1,0 +1,133 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="installation.html">Installing Puppet</a></dd>
+              <dd><a href="language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <h1 id='using_puppet_from_source'>Using Puppet From Source</h1>
+
+<p>Puppet is currently implemented in Ruby and uses standard Ruby libraries. You should be able to run Puppet on any Unix-style host with Ruby. Windows support is planned but not currently available.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+<li><a href="#before_you_begin">Before you Begin</a></li>
+<li><a href="#get_the_source">Get the Source</a></li>
+<li><a href="#tell_ruby_how_to_find_it">Tell Ruby How to Find It</a></li></ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <h2 id='before_you_begin'>Before you Begin</h2>
+
+<p>Make sure your host has Ruby version 1.8.2 or later:</p>
+
+<pre><code class='sh' lang='sh'>$ ruby -v</code></pre>
+
+<p>and, if you want to run the tests, rake:</p>
+
+<pre><code class='sh' lang='sh'>$ rake -V</code></pre>
+
+<p>While Puppet should work with 1.8.1, there have been many reports of problems with this version.</p>
+
+<p>Make sure you have <a href='http://git.or.cz/'>Git</a>:</p>
+
+<pre><code class='sh' lang='sh'>$ git --version</code></pre>
+
+<h2 id='get_the_source'>Get the Source</h2>
+
+<p>Puppet currently relies on another Reductive Labs tool, <a href='http://reductivelabs.com/products/facter'>Facter</a>. Create a working directory and get them both:</p>
+
+<pre><code class='sh' lang='sh'>$ SETUP_DIR=~/git
+$ mkdir -p $SETUP_DIR
+$ cd $SETUP_DIR
+$ git clone git://github.com/reductivelabs/facter
+$ git clone git://github.com/reductivelabs/puppet</code></pre>
+
+<p>You will need to periodically run:</p>
+
+<pre><code class='sh' lang='sh'>$ git pull origin</code></pre>
+
+<p>From your repositories to periodically update your clone to the latest code.</p>
+
+<p>If you want access to all of the tags in the git repositories, so that you can compare releases, for instance, do the following from within the repository:</p>
+
+<pre><code class='sh' lang='sh'>$ git fetch --tags</code></pre>
+
+<p>Then you can compare two releases with something like this:</p>
+
+<pre><code class='sh' lang='sh'>$ git diff 0.25.1 0.25.2</code></pre>
+
+<p>Most of the development on puppet is done in branches based either on features or the major revision lines. Currently the &#8220;stable&#8221; branch is 0.25.x and development is in the &#8220;master&#8221; branch. You can change to and track branches by using the following:</p>
+
+<pre><code class='sh' lang='sh'>git checkout --track -b 0.25.x origin/0.25.x</code></pre>
+
+<h2 id='tell_ruby_how_to_find_it'>Tell Ruby How to Find It</h2>
+
+<p>Last, we need to put the puppet binaries into our path and make the Puppet and Facter libraries available to Ruby:</p>
+
+<pre><code class='sh' lang='sh'>$ PATH=$PATH:$SETUP_DIR/facter/bin:$SETUP_DIR/puppet/bin
+$ RUBYLIB=$SETUP_DIR/facter/lib:$SETUP_DIR/puppet/lib
+$ export PATH RUBYLIB</code></pre>
+
+<p>Facter changes far less often than Puppet and it is very minimal (a single library file and a single executable), so it is probably worth just installing it:</p>
+
+<pre><code class='sh' lang='sh'>$ cd facter
+$ sudo ruby ./install.rb</code></pre>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,242 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="../../files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="../../files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="../../files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="../../index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="../../index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="../../introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="../../installation.html">Installing Puppet</a></dd>
+              <dd><a href="../../language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="../../types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="../../types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <h1 id='exec'>exec</h1>
+
+<p>Executes external commands.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="../../images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#platforms">Platforms</a></li>
+<li><a href="#version_compatibility">Version Compatibility</a></li>
+<li>
+<a href="#parameters">Parameters</a><ul style="list-style: none;">
+<li><a href="#id73"><code>command</code></a></li>
+<li><a href="#id74"><code>creates</code></a></li>
+<li><a href="#id75"><code>cwd</code></a></li>
+<li><a href="#id76"><code>env</code></a></li>
+<li><a href="#id77"><code>environment</code></a></li>
+<li><a href="#id78"><code>group</code></a></li>
+<li><a href="#id79"><code>logoutput</code></a></li>
+<li><a href="#id80"><code>onlyif</code></a></li>
+<li><a href="#id81"><code>path</code></a></li>
+<li><a href="#id82"><code>refresh</code></a></li>
+<li><a href="#id83"><code>refreshonly</code></a></li>
+<li><a href="#id84"><code>returns</code></a></li>
+<li><a href="#id85"><code>timeout</code></a></li>
+<li><a href="#id86"><code>unless</code></a></li>
+<li><a href="#id87"><code>user</code></a></li>
+</ul>
+</li></ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <h2 id='introduction'>Introduction</h2>
+
+<p>It is critical that all commands executed using this mechanism can be run multiple times without harm, i.e., they are <em>idempotent</em>. One useful way to create idempotent commands is to use the checks like <code>creates</code> to avoid running the command unless some condition is met.</p>
+
+<p>Note also that you can restrict an <code>exec</code> to only run when it receives events by using the <code>refreshonly</code> parameter; this is a useful way to have your configuration respond to events with arbitrary commands.</p>
+
+<p>It is worth noting that <code>exec</code> is special, in that it is not currently considered an error to have multiple <code>exec</code> instances with the same name. This was done purely because it had to be this way in order to get certain functionality, but it complicates things. In particular, you will not be able to use <code>exec</code> instances that share their commands with other instances as a dependency, since Puppet has no way of knowing which instance you mean.</p>
+
+<p>For example:</p>
+
+<pre><code># defined in the production class
+exec { &quot;make&quot;:
+    cwd =&gt; &quot;/prod/build/dir&quot;,
+    path =&gt; &quot;/usr/bin:/usr/sbin:/bin&quot;
+}
+
+. etc. .
+
+# defined in the test class
+exec { &quot;make&quot;:
+    cwd =&gt; &quot;/test/build/dir&quot;,
+    path =&gt; &quot;/usr/bin:/usr/sbin:/bin&quot;
+}</code></pre>
+
+<p>Any other type would throw an error, complaining that you had the same instance being managed in multiple places, but these are obviously different images, so <code>exec</code> had to be treated specially.</p>
+
+<p>It is recommended to avoid duplicate names whenever possible.</p>
+
+<p>Note that if an <code>exec</code> receives an event from another resource, it will get executed again (or execute the command specified in <code>refresh</code>, if there is one).</p>
+
+<p>There is a strong tendency to use <code>exec</code> to do whatever work Puppet can&#8217;t already do; while this is obviously acceptable (and unavoidable) in the short term, it is highly recommended to migrate work from <code>exec</code> to native Puppet types as quickly as possible. If you find that you are doing a lot of work with <code>exec</code>, please at least notify us at Reductive Labs what you are doing, and hopefully we can work with you to get a native resource type for the work you are doing.</p>
+
+<h2 id='requirements'>Requirements</h2>
+
+<p>No additional requirmements.</p>
+
+<h2 id='platforms'>Platforms</h2>
+
+<p>All platforms.</p>
+
+<h2 id='version_compatibility'>Version Compatibility</h2>
+<div class='warning'><p>This section has not been completed.</p></div>
+<h2 id='parameters'>Parameters</h2>
+
+<h3 id='id88'><code>command</code></h3>
+
+<p>The actual command to execute. Must either be fully qualified or a search path for the command must be provided. If the command succeeds, any output produced will be logged at the instance&#8217;s normal log level (usually <code>notice</code>), but if the command fails (meaning its return code does not match the specified code) then any output is logged at the <code>err</code> log level.</p>
+<div class='info'><p>This is the <code>namevar</code> for this resource type.</p></div>
+<h3 id='id89'><code>creates</code></h3>
+
+<p>A file that this command creates. If this parameter is provided, then the command will only be run if the specified file does not exist:</p>
+
+<pre><code>exec { &quot;tar xf /my/tar/file.tar&quot;:
+    cwd =&gt; &quot;/var/tmp&quot;,
+    creates =&gt; &quot;/var/tmp/myfile&quot;,
+    path =&gt; [&quot;/usr/bin&quot;, &quot;/usr/sbin&quot;]
+}</code></pre>
+
+<h3 id='id90'><code>cwd</code></h3>
+
+<p>The directory from which to run the command. If this directory does not exist, the command will fail.</p>
+
+<h3 id='id91'><code>env</code></h3>
+<div class='warning'><p>This parameter is deprecated. Use &#8216;environment&#8217; instead.</p></div><div class='warning'><p>This section has not been completed.</p></div>
+<h3 id='id92'><code>environment</code></h3>
+
+<p>Any additional environment variables you want to set for a command. Note that if you use this to set PATH, it will override the <code>path</code> attribute. Multiple environment variables should be specified as an array.</p>
+
+<h3 id='id93'><code>group</code></h3>
+
+<p>The group to run the command as. This seems to work quite haphazardly on different platforms &#8211; it is a platform issue not a Ruby or Puppet one, since the same variety exists when running commnands as different users in the shell.</p>
+
+<h3 id='id94'><code>logoutput</code></h3>
+
+<p>Whether to log output. Defaults to logging output at the loglevel for the <code>exec</code> resource. Use <em>on_failure</em> to only log the output when the command reports an error. Values are <strong>true</strong>, <em>false</em>, <em>on_failure</em>, and any legal log level. Valid values are <code>true</code>, <code>false</code>, <code>on_failure</code>.</p>
+
+<h3 id='id95'><code>onlyif</code></h3>
+
+<p>If this parameter is set, then this <code>exec</code> will only run if the command returns 0. For example:</p>
+
+<pre><code>exec { &quot;logrotate&quot;:
+    path =&gt; &quot;/usr/bin:/usr/sbin:/bin&quot;,
+    onlyif =&gt; &quot;test `du /var/log/messages | cut -f1` -gt 100000&quot;
+}</code></pre>
+
+<p>This would run <code>logrotate</code> only if that test returned true.</p>
+
+<p>Note that this command follows the same rules as the main command, which is to say that it must be fully qualified if the path is not set.</p>
+
+<p>Also note that onlyif can take an array as its value, eg:</p>
+
+<pre><code>onlyif =&gt; [&quot;test -f /tmp/file1&quot;, &quot;test -f /tmp/file2&quot;]</code></pre>
+
+<p>This will only run the exec if /all/ conditions in the array return true.</p>
+
+<h3 id='id96'><code>path</code></h3>
+
+<p>The search path used for command execution. Commands must be fully qualified if no path is specified. Paths can be specified as an array or as a colon-separated list.</p>
+
+<h3 id='id97'><code>refresh</code></h3>
+
+<p>How to refresh this command. By default, the exec is just called again when it receives an event from another resource, but this parameter allows you to define a different command for refreshing.</p>
+
+<h3 id='id98'><code>refreshonly</code></h3>
+
+<p>The command should only be run as a refresh mechanism for when a dependent object is changed. It only makes sense to use this option when this command depends on some other object; it is useful for triggering an action:</p>
+
+<pre><code># Pull down the main aliases file
+file { &quot;/etc/aliases&quot;:
+    source =&gt; &quot;puppet://server/module/aliases&quot;
+}
+
+# Rebuild the database, but only when the file changes
+exec { newaliases:
+    path =&gt; [&quot;/usr/bin&quot;, &quot;/usr/sbin&quot;],
+    subscribe =&gt; File[&quot;/etc/aliases&quot;],
+    refreshonly =&gt; true
+}</code></pre>
+
+<p>Note that only <code>subscribe</code> and <code>notify</code> can trigger actions, not <code>require</code>, so it only makes sense to use <code>refreshonly</code> with <code>subscribe</code> or <code>notify</code>. Valid values are <code>true</code>, <code>false</code>.</p>
+
+<h3 id='id99'><code>returns</code></h3>
+
+<p>The expected return code(s). An error will be returned if the executed command returns something else. Defaults to 0. Can be specified as an array of acceptable return codes or a single value.</p>
+
+<h3 id='id100'><code>timeout</code></h3>
+
+<p>The maximum time the command should take. If the command takes longer than the timeout, the command is considered to have failed and will be stopped. Use any negative number to disable the timeout. The time is specified in seconds.</p>
+
+<h3 id='id101'><code>unless</code></h3>
+
+<p>If this parameter is set, then this <code>exec</code> will run unless the command returns 0. For example:</p>
+
+<pre><code>exec { &quot;/bin/echo root &gt;&gt; /usr/lib/cron/cron.allow&quot;:
+    path =&gt; &quot;/usr/bin:/usr/sbin:/bin&quot;,
+    unless =&gt; &quot;grep root /usr/lib/cron/cron.allow 2&gt;/dev/null&quot;
+}</code></pre>
+
+<p>This would add <code>root</code> to the cron.allow file (on Solaris) unless <code>grep</code> determines it&#8217;s already there.</p>
+
+<p>Note that this command follows the same rules as the main command, which is to say that it must be fully qualified if the path is not set.</p>
+
+<h3 id='id102'><code>user</code></h3>
+
+<p>The user to run the command as. Note that if you use this then any error output is not currently captured. This is because of a bug within Ruby. If you are using Puppet to create this user, the exec will automatically require the user, as long as it is specified by name.</p>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

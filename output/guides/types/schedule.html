@@ -1,0 +1,153 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="../../files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="../../files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="../../files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="../../index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="../../index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="../../introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="../../installation.html">Installing Puppet</a></dd>
+              <dd><a href="../../language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="../../types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="../../types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <p>schedule</p>
+
+<p>Defined schedules for Puppet. The important thing to understand about how schedules are currently implemented in Puppet is that they can only be used to stop a resource from being applied, they never guarantee that it is applied.</p>
+
+<p>Every time Puppet applies its configuration, it will collect the list of resources whose schedule does not eliminate them from running right then, but there is currently no system in place to guarantee that a given resource runs at a given time. If you specify a very restrictive schedule and Puppet happens to run at a time within that schedule, then the resources will get applied; otherwise, that work may never get done.</p>
+
+<p>Thus, it behooves you to use wider scheduling (e.g., over a couple of hours) combined with periods and repetitions. For instance, if you wanted to restrict certain resources to only running once, between the hours of two and 4 AM, then you would use this schedule:</p>
+
+<pre><code>schedule { maint:
+    range =&gt; &quot;2 - 4&quot;,
+    period =&gt; daily,
+    repeat =&gt; 1
+}</code></pre>
+
+<p>With this schedule, the first time that Puppet runs between 2 and 4 AM, all resources with this schedule will get applied, but they won&#8217;t get applied again between 2 and 4 because they will have already run once that day, and they won&#8217;t get applied outside that schedule because they will be outside the scheduled range.</p>
+
+<p>Puppet automatically creates a schedule for each valid period with the same name as that period (e.g., hourly and daily). Additionally, a schedule named <em>puppet</em> is created and used as the default, with the following attributes:</p>
+
+<pre><code>schedule { puppet:
+    period =&gt; hourly,
+    repeat =&gt; 2
+}</code></pre>
+
+<p>This will cause resources to be applied every 30 minutes by default.</p>
+
+<h3 id='parameters'>Parameters</h3>
+
+<h4 id='name'>name</h4>
+
+<ul>
+<li><strong>namevar</strong></li>
+</ul>
+
+<p>The name of the schedule. This name is used to retrieve the schedule when assigning it to an object:</p>
+
+<pre><code>schedule { daily:
+    period =&gt; daily,
+    range =&gt; [2, 4]
+}
+
+exec { &quot;/usr/bin/apt-get update&quot;:
+    schedule =&gt; daily
+}</code></pre>
+
+<h4 id='period'>period</h4>
+
+<p>The period of repetition for a resource. Choose from among a fixed list of <em>hourly</em>, <em>daily</em>, <em>weekly</em>, and <em>monthly</em>. The default is for a resource to get applied every time that Puppet runs, whatever that period is.</p>
+
+<p>Note that the period defines how often a given resource will get applied but not when; if you would like to restrict the hours that a given resource can be applied (e.g., only at night during a maintenance window) then use the <code>range</code> attribute.</p>
+
+<p>If the provided periods are not sufficient, you can provide a value to the <em>repeat</em> attribute, which will cause Puppet to schedule the affected resources evenly in the period the specified number of times. Take this schedule:</p>
+
+<pre><code>schedule { veryoften:
+    period =&gt; hourly,
+    repeat =&gt; 6
+}</code></pre>
+
+<p>This can cause Puppet to apply that resource up to every 10 minutes.</p>
+
+<p>At the moment, Puppet cannot guarantee that level of repetition; that is, it can run up to every 10 minutes, but internal factors might prevent it from actually running that often (e.g., long-running Puppet runs will squash conflictingly scheduled runs).</p>
+
+<p>See the <code>periodmatch</code> attribute for tuning whether to match times by their distance apart or by their specific value. Valid values are <code>hourly</code>, <code>daily</code>, <code>weekly</code>, <code>monthly</code>, <code>never</code>.</p>
+
+<h4 id='periodmatch'>periodmatch</h4>
+
+<p>Whether periods should be matched by number (e.g., the two times are in the same hour) or by distance (e.g., the two times are 60 minutes apart). Valid values are <code>number</code>, <code>distance</code>.</p>
+
+<h4 id='range'>range</h4>
+
+<p>The earliest and latest that a resource can be applied. This is always a range within a 24 hour period, and hours must be specified in numbers between 0 and 23, inclusive. Minutes and seconds can be provided, using the normal colon as a separator. For instance:</p>
+
+<pre><code>schedule { maintenance:
+    range =&gt; &quot;1:30 - 4:30&quot;
+}</code></pre>
+
+<p>This is mostly useful for restricting certain resources to being applied in maintenance windows or during off-peak hours.</p>
+
+<h4 id='repeat'>repeat</h4>
+
+<p>How often the application gets repeated in a given period. Defaults to 1. Must be an integer.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="../../images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+</ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <p>* *</p>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

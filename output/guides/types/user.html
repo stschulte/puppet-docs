@@ -1,0 +1,226 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="../../files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="../../files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="../../files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="../../files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="../../index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="../../index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="../../introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="../../installation.html">Installing Puppet</a></dd>
+              <dd><a href="../../language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="../../types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="../../types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <p>user</p>
+
+<p>Manage users. This type is mostly built to manage system users, so it is lacking some features useful for managing normal users.</p>
+
+<p>This resource type uses the prescribed native tools for creating groups and generally uses POSIX APIs for retrieving information about them. It does not directly modify /etc/passwd or anything.</p>
+
+<h3 id='features'>Features</h3>
+
+<ul>
+<li><strong>allows_duplicates</strong>: The provider supports duplicate users with the same UID.</li>
+
+<li><strong>manages_homedir</strong>: The provider can create and remove home directories.</li>
+
+<li><strong>manages_passwords</strong>: The provider can modify user passwords, by accepting a password hash.</li>
+
+<li><strong>manages_solaris_rbac</strong>: The provider can manage roles and normal users</li>
+</ul>
+
+<h1 id='manages_homedir_manages_passwords_manages_solaris_rbac'>manages_homedir manages_passwords manages_solaris_rbac</h1>
+
+<p>hpuxuseradd <strong>X</strong> <strong>X</strong> ldap <strong>X</strong> pw <strong>X</strong> <strong>X</strong> user_role_add</p>
+
+<h1 id='x_x_x_x_useradd_x_x_'><strong>X</strong> <strong>X</strong> <strong>X</strong> <strong>X</strong> useradd <strong>X</strong> <strong>X</strong> ================</h1>
+
+<h3 id='parameters'>Parameters</h3>
+
+<h4 id='allowdupe'>allowdupe</h4>
+
+<p>Whether to allow duplicate UIDs. Valid values are <code>true</code>, <code>false</code>.</p>
+
+<h4 id='auth_membership'>auth_membership</h4>
+
+<p>Whether specified auths should be treated as the only auths of which the user is a member or whether they should merely be treated as the minimum membership list. Valid values are <code>inclusive</code>, <code>minimum</code>.</p>
+
+<h4 id='auths'>auths</h4>
+
+<p>The auths the user has. Multiple auths should be specified as an array. Requires features manages_solaris_rbac.</p>
+
+<h4 id='comment'>comment</h4>
+
+<p>A description of the user. Generally is a user&#8217;s full name.</p>
+
+<h4 id='ensure'>ensure</h4>
+
+<p>The basic state that the object should be in. Valid values are <code>present</code>, <code>absent</code>, <code>role</code>.</p>
+
+<h4 id='gid'>gid</h4>
+
+<p>The user&#8217;s primary group. Can be specified numerically or by name.</p>
+
+<h4 id='groups'>groups</h4>
+
+<p>The groups of which the user is a member. The primary group should not be listed. Multiple groups should be specified as an array.</p>
+
+<h4 id='home'>home</h4>
+
+<p>The home directory of the user. The directory must be created separately and is not currently checked for existence.</p>
+
+<h4 id='key_membership'>key_membership</h4>
+
+<p>Whether specified key value pairs should be treated as the only attributes of the user or whether they should merely be treated as the minimum list. Valid values are <code>inclusive</code>, <code>minimum</code>.</p>
+
+<h4 id='keys'>keys</h4>
+
+<p>Specify user attributes in an array of keyvalue pairs Requires features manages_solaris_rbac.</p>
+
+<h4 id='managehome'>managehome</h4>
+
+<p>Whether to manage the home directory when managing the user. Valid values are <code>true</code>, <code>false</code>.</p>
+
+<h4 id='membership'>membership</h4>
+
+<p>Whether specified groups should be treated as the only groups of which the user is a member or whether they should merely be treated as the minimum membership list. Valid values are <code>inclusive</code>, <code>minimum</code>.</p>
+
+<h4 id='name'>name</h4>
+
+<ul>
+<li><strong>namevar</strong></li>
+</ul>
+
+<p>User name. While limitations are determined for each operating system, it is generally a good idea to keep to the degenerate 8 characters, beginning with a letter.</p>
+
+<h4 id='password'>password</h4>
+
+<p>The user&#8217;s password, in whatever encrypted format the local machine requires. Be sure to enclose any value that includes a dollar sign ($) in single quotes (&#8216;). Requires features manages_passwords.</p>
+
+<h4 id='profile_membership'>profile_membership</h4>
+
+<p>Whether specified roles should be treated as the only roles of which the user is a member or whether they should merely be treated as the minimum membership list. Valid values are <code>inclusive</code>, <code>minimum</code>.</p>
+
+<h4 id='profiles'>profiles</h4>
+
+<p>The profiles the user has. Multiple profiles should be specified as an array. Requires features manages_solaris_rbac.</p>
+
+<h4 id='project'>project</h4>
+
+<p>The name of the project associated with a user Requires features manages_solaris_rbac.</p>
+
+<h4 id='provider'>provider</h4>
+
+<p>The specific backend for provider to use. You will seldom need to specify this &#8211; Puppet will usually discover the appropriate provider for your platform. Available providers are:</p>
+
+<ul>
+<li>
+<p><strong>directoryservice</strong>: User management using DirectoryService on OS X. Required binaries: <code>/usr/bin/dscl</code>. Default for <code>operatingsystem</code> == <code>darwin</code>. Supported features: <code>manages_passwords</code>.</p>
+</li>
+
+<li>
+<p><strong>hpuxuseradd</strong>: User management for hp-ux! Undocumented switch to special usermod because HP-UX regular usermod is TOO STUPID to change stuff while the user is logged in. Required binaries: <code>/usr/sam/lbin/usermod.sam</code>, <code>/usr/sam/lbin/userdel.sam</code>, <code>/usr/sbin/useradd</code>. Default for <code>operatingsystem</code> == <code>hp-ux</code>. Supported features: <code>allows_duplicates</code>, <code>manages_homedir</code>.</p>
+</li>
+
+<li>
+<dl>
+<dt><strong>ldap</strong>: User management via <code>ldap</code>. This provider requires that you</dt>
+
+<dd>
+<p>have valid values for all of the ldap-related settings, including <code>ldapbase</code>. You will also almost definitely need settings for <code>ldapuser</code> and <code>ldappassword</code>, so that your clients can write to ldap.</p>
+</dd>
+
+<dd>
+<p>Note that this provider will automatically generate a UID for you if you do not specify one, but it is a potentially expensive operation, as it iterates across all existing users to pick the appropriate next one. Supported features: <code>manages_passwords</code>.</p>
+</dd>
+</dl>
+</li>
+
+<li>
+<p><strong>pw</strong>: User management via <code>pw</code> on FreeBSD. Required binaries: <code>pw</code>. Default for <code>operatingsystem</code> == <code>freebsd</code>. Supported features: <code>allows_duplicates</code>, <code>manages_homedir</code>.</p>
+</li>
+
+<li>
+<p><strong>user_role_add</strong>: User management inherits <code>useradd</code> and adds logic to manage roles on Solaris using roleadd. Required binaries: <code>usermod</code>, <code>roledel</code>, <code>rolemod</code>, <code>userdel</code>, <code>useradd</code>, <code>roleadd</code>. Default for <code>operatingsystem</code> == <code>solaris</code>. Supported features: <code>allows_duplicates</code>, <code>manages_homedir</code>, <code>manages_passwords</code>, <code>manages_solaris_rbac</code>.</p>
+</li>
+
+<li>
+<p><strong>useradd</strong>: User management via <code>useradd</code> and its ilk. Note that you will need to install the <code>Shadow Password</code> Ruby library often known as ruby-libshadow to manage user passwords. Required binaries: <code>usermod</code>, <code>userdel</code>, <code>useradd</code>. Supported features: <code>allows_duplicates</code>, <code>manages_homedir</code>.</p>
+</li>
+</ul>
+
+<h4 id='role_membership'>role_membership</h4>
+
+<p>Whether specified roles should be treated as the only roles of which the user is a member or whether they should merely be treated as the minimum membership list. Valid values are <code>inclusive</code>, <code>minimum</code>.</p>
+
+<h4 id='roles'>roles</h4>
+
+<p>The roles the user has. Multiple roles should be specified as an array. Requires features manages_solaris_rbac.</p>
+
+<h4 id='shell'>shell</h4>
+
+<p>The user&#8217;s login shell. The shell must exist and be executable.</p>
+
+<h4 id='uid'>uid</h4>
+
+<p>The user ID. Must be specified numerically. For new users being created, if no user ID is specified then one will be chosen automatically, which will likely result in the same user having different IDs on different systems, which is not recommended. This is especially noteworthy if you use Puppet to manage the same user on both Darwin and other platforms, since Puppet does the ID generation for you on Darwin, but the tools do so on other platforms.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="../../images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+</ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <p>* *</p>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

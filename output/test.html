@@ -1,0 +1,135 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="installation.html">Installing Puppet</a></dd>
+              <dd><a href="language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <h1 id='a_guide_to_testing_rails_applications'>A Guide to Testing Rails Applications</h1>
+
+<p>This guide covers built-in mechanisms offered by Rails to test your application. By referring to this guide, you will be able to:</p>
+
+<ul>
+<li>Understand Rails testing terminology</li>
+
+<li>Write unit, functional and integration tests for your application</li>
+
+<li>Identify other popular testing approaches and plugins</li>
+</ul>
+
+<p>This guide won&#8217;t teach you to write a Rails application; it assumes basic familiarity with the Rails way of doing things.</p>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+<li><a href="#why_write_tests_for_your_rails_applications">Why Write Tests for your Rails Applications?</a></li>
+<li><a href="#introduction_to_testing">Introduction to Testing</a></li>
+<li>
+<a href="#the_three_environments">The Three Environments</a><ul style="list-style: none;"><li><a href="#rails_sets_up_for_testing_from_the_word_go">Rails Sets up for Testing from the Word Go</a></li></ul>
+</li></ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <h2 id='why_write_tests_for_your_rails_applications'>Why Write Tests for your Rails Applications?</h2>
+
+<ul>
+<li>Rails makes it super easy to write your tests. It starts by producing skeleton test code in background while you are creating your models and controllers.</li>
+
+<li>By simply running your Rails tests you can ensure your code adheres to the desired functionality even after some major code refactoring.</li>
+
+<li>Rails tests can also simulate browser requests and thus you can test your application&#8217;s response without having to test it through your browser.</li>
+</ul>
+
+<h2 id='introduction_to_testing'>Introduction to Testing</h2>
+
+<p>Testing support was woven into the Rails fabric from the beginning. It wasn&#8217;t an &#8220;oh! let&#8217;s bolt on support for running tests because they&#8217;re new and cool&#8221; epiphany. Just about every Rails application interacts heavily with a database - and, as a result, your tests will need a database to interact with as well. To write efficient tests, you&#8217;ll need to understand how to set up this database and populate it with sample data.</p>
+
+<h2 id='the_three_environments'>The Three Environments</h2>
+
+<p>Every Rails application you build has 3 sides: a side for production, a side for development, and a side for testing.</p>
+
+<p>One place you&#8217;ll find this distinction is in the +config/database.yml+ file. This YAML configuration file has 3 different sections defining 3 unique database setups:</p>
+
+<ul>
+<li>production</li>
+
+<li>development</li>
+
+<li>test</li>
+</ul>
+
+<p>This allows you to set up and interact with test data without any danger of your tests altering data from your production environment.</p>
+
+<p>For example, suppose you need to test your new +delete_this_user_and_every_everything_associated_with_it+ function. Wouldn&#8217;t you want to run this in an environment where it makes no difference if you destroy data or not?</p>
+
+<p>When you do end up destroying your testing database (and it will happen, trust me), you can rebuild it from scratch according to the specs defined in the development database. You can do this by running +rake db:test:prepare+.</p>
+
+<h3 id='rails_sets_up_for_testing_from_the_word_go'>Rails Sets up for Testing from the Word Go</h3>
+
+<p>Rails creates a +test+ folder for you as soon as you create a Rails project using +rails <em>application</em>name_+. If you list the contents of this folder then you shall see:</p>
+
+<pre><code class='sh' lang='sh'>$ ls -F test/
+fixtures/       functional/     integration/    test_helper.rb    unit/</code></pre>
+
+<p>Here is some Ruby</p>
+
+<pre><code class='ruby' lang='ruby'><span class='keyword'>def </span><span class='method'>foo</span>
+  <span class='ident'>puts</span> <span class='number'>1</span>
+<span class='keyword'>end</span></code></pre>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>

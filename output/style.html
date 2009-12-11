@@ -1,0 +1,246 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Puppet Docs</title>
+    <link rel="stylesheet" type="text/css" href="files/stylesheets/style.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="files/stylesheets/syntax.css" media="all"/>
+  <script type="text/javascript" src="files/javascripts/guides.js"></script>
+  <!-- <script type="text/javascript" src="files/javascripts/code_highlighter.js"></script><script type="text/javascript" src="files/javascripts/highlighters.js"></script> --></head>
+  <body class="guide">
+    <div id="topNav">
+      <div class="wrapper">
+        <strong>More at <a href="http://reductivelabs.com/">reductivelabs.com:</a> </strong>
+        <a href="http://projects.reductivelabs.com/">Issue Tracker</a>
+      </div>
+    </div>
+    <div id="header">
+      <div class="wrapper clearfix">
+        <h1><a href="index.html" title="Return to home page">docs.reductivelabs.com</a></h1>
+        <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
+        <ul class="nav">
+          <li><a href="index.html">Home</a></li>
+          <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Docs Index</a>
+          <div id="index-dialog" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="L">
+              <dt>Guides</dt>
+              <dd><a href="introduction.html">An Introduction to Puppet</a></dd>
+              <dd><a href="installation.html">Installing Puppet</a></dd>
+              <dd><a href="language_tutorial.html">Puppet Language Tutorial</a></dd>
+            </dl>
+            <dl class="R">
+              <dt>References</dt>
+              <dd><a href="types/">Resource Types (Categorized)</a></dd>
+              <dd><a href="types/alphabetical_index.html">Resource Types (Alphabetical)</a></dd>
+            </dl>
+          </div>
+          </li>
+          <li><a href="contribute.html">Contribute</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="hide" />
+
+    <div id="feature">
+      <div class="wrapper">
+        <h1 id='style_guide'>Style Guide</h1>
+        
+              <div id="subCol">
+        <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Contents</h3>
+        <ol class="chapters">
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#arrow_alignment">Arrow Alignment</a></li>
+<li>
+<a href="#attributes_and_values">Attributes and Values</a><ul style="list-style: none;">
+<li><a href="#quoting">Quoting</a></li>
+<li><a href="#commas">Commas</a></li>
+</ul>
+</li>
+<li><a href="#resource_names">Resource Names</a></li>
+<li>
+<a href="#resource_declaration">Resource Declaration</a><ul style="list-style: none;">
+<li><a href="#singleline_statements">Single-Line statements</a></li>
+<li><a href="#multideclaration_resource_statements">Multi-Declaration resource statements</a></li>
+</ul>
+</li>
+<li><a href="#symlinks">Symlinks</a></li>
+<li><a href="#case_statements">Case Statements</a></li></ol></div>
+      </div>
+    </div>
+    
+    <div id="container">
+      <div class="wrapper">
+        <div id="mainCol">
+          <h2 id='introduction'>Introduction</h2>
+
+<p>Puppet manifests, as one would expect, can be written in multiple ways. There are many variations on how to specify resources, multiple legal syntaxes, etc. These guidelines were developed at Stanford University, where complexity drove the need for a highly formalized and structured stylistic practice which is strictly adhered to by the dozen Unix admins who maintain over fifty (50) unique server models using over five hundred (00) individual manifests and over one thousand (1,000) unique classes to maintain over four hundred (400) servers (and those numbers are growing constantly as nearly half the infrastructure remains to be migrated to Puppet). With this much code and so many individuals contributing, it was imperative that every member of the team wrote Puppet manifests in a consistent and legible manner. Thus, the following Style Guide was created.</p>
+
+<p>For consistent look-and-feel of Puppet manifests across the community, it is suggested that Puppet users adhere to these stylistic guidelines. These guidelines are aimed to make large manifests as legible as possible, so the style aims to columnate and align elements as neatly as possible.</p>
+
+<h2 id='arrow_alignment'>Arrow Alignment</h2>
+
+<p>The arrow (<code>=&gt;</code>) should be aligned at the column one space out from the longest parameter. Not obvious in the above example is that the arrow is only aligned per resource. Therefore, the following is correct:</p>
+
+<pre><code>exec { 
+    &quot;blah&quot;:
+        path =&gt; &quot;/usr/bin&quot;,
+        cwd  =&gt; &quot;/tmp&quot;;
+    &quot;test&quot;:
+        subscribe   =&gt; File[&quot;/etc/test&quot;],
+        refreshonly =&gt; true;
+}</code></pre>
+
+<p>But the following is incorrect:</p>
+
+<pre><code>exec { 
+    &quot;blah&quot;:
+        path        =&gt; &quot;/usr/bin&quot;,
+        cwd         =&gt; &quot;/tmp&quot;;
+    &quot;test&quot;:
+        subscribe   =&gt; File[&quot;/etc/test&quot;],
+        refreshonly =&gt; true;
+}</code></pre>
+
+<h2 id='attributes_and_values'>Attributes and Values</h2>
+
+<h3 id='quoting'>Quoting</h3>
+
+<p>Attributes for resources should not be double quoted but their values should be unless they are native types. For instance, the keyword <code>exists</code> as a value of the ensure attribute of a file resource should not be in double quotes. In contrast, the owner attribute of a file should have a value in double quotes as the owner will never be a native value.</p>
+
+<p>Example:</p>
+
+<pre><code>file { &quot;/tmp/somefile&quot;:
+    ensure =&gt; exists,
+    owner  =&gt; &quot;root&quot;,
+}</code></pre>
+
+<h3 id='commas'>Commas</h3>
+
+<p>The last attribute-value pair ends with a comma even though there are no other attribute-value pairs.</p>
+
+<p>Example:</p>
+
+<pre><code>file { &quot;/tmp/somefile&quot;:
+    ensure =&gt; exists,
+    owner  =&gt; &quot;root&quot;,
+}</code></pre>
+
+<h2 id='resource_names'>Resource Names</h2>
+
+<p>All resource names should be in double quotes. Although Puppet supports unquoted resource names if they do not contain spaces, placing all names in double quotes allows for consistent look-and-feel.</p>
+
+<p>Incorrect:</p>
+
+<pre><code>package { openssh: ensure =&gt; present }</code></pre>
+
+<p>Correct:</p>
+
+<pre><code>package { &quot;openssh&quot;: ensure =&gt; present }</code></pre>
+
+<h2 id='resource_declaration'>Resource Declaration</h2>
+
+<h3 id='singleline_statements'>Single-Line statements</h3>
+
+<p>In cases where there is only one attribute-value pair, a resource can be declared in a single line:</p>
+
+<pre><code>file { &quot;/tmp/somefile&quot;: ensure =&gt; exists }</code></pre>
+
+<h3 id='multideclaration_resource_statements'>Multi-Declaration resource statements</h3>
+
+<p>In Puppet, when multiple resources of the same type need to be defined, they can be defined within a single semi-colon separated statement. Observe the formatting in the example below:</p>
+
+<pre><code>file {
+    &quot;/tmp/app&quot;:
+        ensure =&gt; directory;
+    &quot;/tmp/app/file&quot;:
+        ensure =&gt; exists,
+        owner  =&gt; &quot;webapp&quot;;
+    &quot;/tmp/app/file2&quot;:
+        ensure =&gt; exists,
+        owner  =&gt; &quot;webapp&quot;,
+        mode   =&gt; 755;
+}</code></pre>
+
+<p>Note that in this case, even though there is a file resource with only one attribute-value pair, the single line format is not used. Also note that the last attribute-value pair ends with a semicolon.</p>
+
+<p>If all the file resources had only one attribute, the single line format could be used as below:</p>
+
+<pre><code>file {
+    &quot;/tmp/app&quot;:       ensure =&gt; directory;
+    &quot;/tmp/app/file&quot;:  ensure =&gt; file;
+    &quot;/tmp/app/file2&quot;: ensure =&gt; file;
+}</code></pre>
+
+<p>As in the above example, parameter names should be aligned at the column one space out from the colon after the longest resource name (<code>/tmp/app/file2</code> in this example).</p>
+
+<h2 id='symlinks'>Symlinks</h2>
+
+<p>To make the intended behavior explicitly clear, the following is recommended as the correct way to specifiy symlinked files:</p>
+
+<pre><code>file { &quot;/var/log/syslog&quot;:
+    ensure =&gt; link,
+    target =&gt; &quot;/var/log/messages&quot;,
+}</code></pre>
+
+<h2 id='case_statements'>Case Statements</h2>
+
+<p>A well-formed example of a case select statement:</p>
+
+<pre><code>case $cloneid {
+    &quot;xorn&quot;: {
+        include soe-workstation
+        case $hostname {
+            &quot;ford&quot;,
+            &quot;holbrook&quot;,
+            &quot;trillian&quot;: {
+                include support-workstation
+            }
+            &quot;mw140ma&quot;,
+            &quot;mw140mb&quot;,
+            &quot;mw140mc&quot;,
+            &quot;mw140md&quot;: {
+                include doc-scanner,
+                    flat-scanner
+            }
+        }
+    }
+    &quot;phoenix&quot;: {
+        include soe-workstation,
+            site-scripts:workstation
+        case $hostname {
+            &quot;ford&quot;,
+            &quot;holbrook&quot;,
+            &quot;trillian&quot;: {
+                include support-workstation
+            }
+            &quot;mw140ma&quot;,
+            &quot;mw140mb&quot;,
+            &quot;mw140mc&quot;,
+            &quot;mw140md&quot;: {
+                include doc-scanner,
+                    flat-scanner
+                }
+            &quot;mw430ma&quot;,
+            &quot;mw430mb&quot;,
+            &quot;mw430mc&quot;: {
+                include doc-scanner
+            }
+        }
+    }
+}</code></pre>
+        </div>
+      </div>
+    </div>
+    
+    <hr class="hide" />
+    
+    <div id="footer">
+      <div class="wrapper">
+        <p>&copy; 2009 Reductive Labs.</p>
+        <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0</a> License.</p>
+        <p>The documentation format are based on the &#8220;Rails Guides&#8221; project by the Ruby on Rails community.</p> 
+      </div>
+    </div>
+
+  </body>
+</html>
